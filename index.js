@@ -3,22 +3,19 @@ var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 9000;
 var realtime = require('./server/realtime');
-var numusers = 0;
-
 server.listen(port, function () {
   console.log('Server listening at port %d', port);
 });
 
 // Routing
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/dist'));
 
 app.get('*', function(req, res){
-  res.sendfile(__dirname + '/public/index.html');
+  res.sendfile(__dirname + '/dist/index.html');
 });
+// Chatroom
 
-
-realtime(io, numusers);
-
-
+var numUsers = 0;
+realtime(io, numUsers);
