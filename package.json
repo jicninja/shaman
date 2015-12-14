@@ -1,0 +1,13 @@
+{
+  "name": "CGJ2015",
+  "version": "0.0.0",
+  "description": "La web de la global Gamejam",
+  "main": "index.js",
+  "author": ["Ignacio Castro"],
+  "private": true,
+  "license": "GNU GPL 3.0",
+  "dependencies": {
+    "express": "3.4.8",
+    "socket.io": "1.3.7"
+  }
+}
