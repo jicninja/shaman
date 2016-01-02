@@ -29,6 +29,9 @@ gulp.task('sass', function () {
 gulp.task('sass:watch', function () {
     gulp.watch('./public/assets/sass/*.scss', ['sass']);
 });
+gulp.task('copyDev', function () {
+    gulp.watch( ['./public/**/*','./public/**/**/*'], ['copy']);
+});
 
 gulp.task('uglify', function() {
    return gulp.src('./public/app/*.js')
@@ -56,9 +59,7 @@ gulp.task('clean', function(){
          .pipe(rimraf());
 });
 
-gulp.task('dev', ['sass:watch'] , function(){
-    gulp.watch('./public/**/*', [ 'copy']);
-});
+gulp.task('dev', ['sass:watch', 'copyDev', 'server'] );
 
 gulp.task('compile',function() {
     runSequence('clean', 'sass', 'uglify', 'htmlCompile');
