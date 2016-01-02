@@ -1,5 +1,7 @@
 /* Fix user-agent */
 
+
+
 * {
   box-sizing: border-box;
 }
@@ -7,6 +9,17 @@
 html {
   font-weight: 300;
   -webkit-font-smoothing: antialiased;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  margin : 0;
+  padding: 0;
+}
+canvas {
+  margin: 0;
+  width: 100%;
 }
 
 html, input {
