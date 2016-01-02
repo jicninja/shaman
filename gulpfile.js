@@ -33,8 +33,16 @@ gulp.task('copyDev', function () {
     gulp.watch( ['./public/**/*','./public/**/**/*'], ['copy']);
 });
 
-gulp.task('uglify', function() {
-   return gulp.src('./public/app/*.js')
+
+gulp.task('uglify:vendor', function() {
+    return gulp.src(['./public/app/aapixi.js','./public/app/aasocketio.js'])
+        .pipe(concat('vendor.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('./dist/app'))
+});
+
+gulp.task('uglify:app', function() {
+   return gulp.src(['!./public/app/aapixi.js','!./public/app/aasocketio.js','./public/app/*.js'])
         .pipe(concat('app.js'))
         .pipe(uglify())
         .pipe(gulp.dest('./dist/app'))
@@ -44,7 +52,8 @@ gulp.task('htmlCompile', function() {
    return gulp.src('./public/index.html')
         .pipe(htmlreplace({
             'css': 'assets/styles.min.css',
-            'js': '/app/app.js'
+            'vendor': 'app/vendor.js',
+            'js': 'app/app.js'
         }))
         .pipe(gulp.dest('./dist/'));
 });
@@ -52,6 +61,11 @@ gulp.task('htmlCompile', function() {
 gulp.task('copy', function(){
     gulp.src('./public/**')
         .pipe(gulp.dest('./dist'));
+});
+
+gulp.task('copyImages', function(){
+    gulp.src('./public/assets/*.png')
+        .pipe(gulp.dest('./dist/assets'));
 });
 
 gulp.task('clean', function(){
@@ -62,7 +76,7 @@ gulp.task('clean', function(){
 gulp.task('dev', ['sass:watch', 'copyDev', 'server'] );
 
 gulp.task('compile',function() {
-    runSequence('clean', 'sass', 'uglify', 'htmlCompile');
+    runSequence('clean', 'sass', 'copyImages', 'uglify:vendor','uglify:app', 'htmlCompile');
 });
 
 // clean up if an error goes unhandled.
