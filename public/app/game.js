@@ -1,4 +1,5 @@
 var width = document.body.clientWidth > 1000 ? document.body.clientWidth : 1000;
+
 var renderer = PIXI.autoDetectRenderer( width , 300,  { transparent: true, view: document.getElementById('header-canvas') });
 var stage = new PIXI.Container();
 var enemy =[];
@@ -27,10 +28,9 @@ function onLoadedCallback(loader, resources) {
 
     yetiTexture = resources.yeti.texture;
 
-    yeti = new player(yetiName, yetiTexture, {type: 'OWN'}, stage);
+    yeti = new player(yetiName, yetiTexture, {type: CGJ.players.type.PLAYABLE}, stage);
     socket.emit('add user', yetiName);
-    yeti.setFloor(180);
-    yeti.sprite.position.x = 30;
+
     customBg.tilingSprite.position.y = 50;
     customBg2.tilingSprite.position.y = 295;
 
@@ -39,8 +39,7 @@ function onLoadedCallback(loader, resources) {
 
 socket.on('user joined', function(data) {
     console.log('joined', data);
-    var newEnemy = new player(data.username, yetiTexture, {type: 'OTHER', id: data.id}, stage);
-    newEnemy.setFloor(180);
+    var newEnemy = new player(data.username, yetiTexture, {type: CGJ.players.type.ENEMY, id: data.id}, stage);
     enemy.push(newEnemy);
 });
 
@@ -60,22 +59,20 @@ function animate(timestamp) {
 
     while (lag >= frameDuration) {
 
-        customBg.update(yeti.isRuninng ? yeti.velocity: 0);
-        customBg2.update(yeti.isRuninng ? yeti.velocity : 0);
+        customBg.update(yeti.velocity.running ? yeti.velocity.actual : 0);
+        customBg2.update(yeti.velocity.running ? yeti.velocity.actual : 0);
 
-        if(yeti.isRuninng) {
-            if(yeti.sprite.position.x > width *0.3) {
-                stage.position.x -= yeti.velocity;
-                customBg.tilingSprite.position.x += yeti.velocity;
-                customBg2.tilingSprite.position.x += yeti.velocity;
+        if(yeti.velocity.running) {
+            if(yeti.sprite.position.x > width * 0.3) {
+                stage.position.x -= yeti.velocity.actual;
+                customBg.tilingSprite.position.x += yeti.velocity.actual;
+                customBg2.tilingSprite.position.x += yeti.velocity.actual;
             }
         }
         yeti.update(socket);
         lag -= frameDuration;
     }
 
-
-    var lagOffset = lag / frameDuration;
 
     renderer.render(stage);
     previous = timestamp;
@@ -90,7 +87,7 @@ function checkKeyUp (e) {
     e = e || window.event;
     if (e.keyCode == '39') {
         // right arrow
-        yeti.isFast = false;
+        yeti.run(true, false);
     }
 }
 
@@ -100,8 +97,8 @@ function checkKey(e) {
 
     if (e.keyCode == '38') {
         // up arrow
-        yeti.isRuninng = true;
-        yeti.jump();
+        yeti.run(true, yeti.velocity.fast);
+        yeti.DoJump();
     }
     else if (e.keyCode == '40') {
         // down arrow
@@ -112,8 +109,7 @@ function checkKey(e) {
     }
     else if (e.keyCode == '39') {
         // right arrow
-        yeti.isRuninng = true;
-        yeti.isFast = true;
+        yeti.run(true, true);
     }
 
 }
