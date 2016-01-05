@@ -35,14 +35,14 @@ gulp.task('copyDev', function () {
 
 
 gulp.task('uglify:vendor', function() {
-    return gulp.src(['./public/app/pixi.js','./public/app/socketio.js','./public/app/lodash.js'])
+    return gulp.src(['./public/app/pixi.js','./public/app/socketio.js','./public/app/lodash.js','./public/app/hammer.js'])
         .pipe(concat('vendor.js'))
         .pipe(uglify())
         .pipe(gulp.dest('./dist/app'))
 });
 
 gulp.task('uglify:app', function() {
-   return gulp.src(['!./public/app/pixi.js','!./public/app/socketio.js','!./public/app/lodash.js','./public/app/*.js'])
+   return gulp.src(['!./public/app/pixi.js','!./public/app/socketio.js','!./public/app/lodash.js','!./public/app/hammer.js','./public/app/*.js'])
         .pipe(concat('app.js'))
         .pipe(uglify())
         .pipe(gulp.dest('./dist/app'))
