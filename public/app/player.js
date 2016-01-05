@@ -160,3 +160,12 @@ player.prototype.attach = function (stage) {
         stage.addChild(this.text);
     }
 };
+
+// borra todo
+player.prototype.destroy = function (stage) {
+  if(!stage) {return false};
+    stage.removeChild(this.sprite);
+    if(this.text){
+        stage.removeChild(this.text);
+    }
+};
