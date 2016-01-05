@@ -2,12 +2,11 @@ var width = document.body.clientWidth > 1000 ? document.body.clientWidth : 1000;
 
 var renderer = PIXI.autoDetectRenderer( width , 300,  { transparent: true, view: document.getElementById('header-canvas') });
 var stage = new PIXI.Container();
-var enemy =[];
+var enemy = [];
 var yetiTexture;
 
-var fps = 60,
-    previous = 0,
-    frameDuration = 1000 / fps,
+var previous = 0,
+    frameDuration = 1000 / CGJ.fps,
     lag = 0;
 
 var socket = io();
@@ -38,14 +37,48 @@ function onLoadedCallback(loader, resources) {
 }
 
 socket.on('user joined', function(data) {
-    console.log('joined', data);
     var newEnemy = new player(data.username, yetiTexture, {type: CGJ.players.type.ENEMY, id: data.id}, stage);
     enemy.push(newEnemy);
 });
 
+socket.on('init users', function(data){
+
+    var users = data.users;
+    if(users) {
+        var l = users.length;
+        if(users.length) {
+            for (var i = 0; i < l ; i++) {
+                var newEnemy = new player(users[i].username, yetiTexture, {type: CGJ.players.type.ENEMY, id: users[i].id}, stage);
+                var playerData = users[i].playerData;
+
+                if(playerData){
+
+                    console.log('pos', playerData);
+
+
+                    newEnemy.initPosition({x: playerData.x, y: playerData.y});
+                }
+
+                enemy.push(newEnemy);
+            }
+
+        }
+    }
+});
+
+socket.on('user left', function(data){
+
+    var toRemove = _.findIndex(enemy, {id: data.id});
+
+    if(toRemove >= 0){
+        enemy[toRemove].destroy(stage);
+        enemy.splice(toRemove, 1);
+    }
+});
+
 socket.on('change position', function(data) {
     var toUpdate = _.find(enemy, {id: data.id});
-    if(toUpdate) { toUpdate.updateServer(data.position)}
+    if(toUpdate) { toUpdate.updateServer(data.data)}
 });
 
 function animate(timestamp) {
@@ -91,6 +124,19 @@ function checkKeyUp (e) {
     }
 }
 
+
+var myElement = document.getElementById('header-canvas');
+var mc = Hammer(myElement);
+
+mc.on('press', function(e) {
+    yeti.run(true, !yeti.velocity.fast);
+});
+
+mc.on('pressup', function(e) {
+    yeti.run(true, false);
+    yeti.DoJump();
+});
+
 function checkKey(e) {
 
     e = e || window.event;
@@ -101,6 +147,7 @@ function checkKey(e) {
         yeti.DoJump();
     }
     else if (e.keyCode == '40') {
+        yeti.destroy();
         // down arrow
     }
     else if (e.keyCode == '37') {
