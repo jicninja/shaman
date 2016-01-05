@@ -1,3 +1,5 @@
+var _ = require('lodash');
+
 module.exports = function(io, numUsers) {
     var numUsers = 0;
 
@@ -8,13 +10,13 @@ module.exports = function(io, numUsers) {
         // when the client emits 'new message', this listens and executes
         socket.on('change position', function (data) {
             // we tell the client to execute 'new message'
+            socket.playerData = data;
             socket.broadcast.emit('change position', {
                 id: socket.id,
                 username: socket.username,
-                position: data,
+                data: socket.playerData,
             });
 
-            console.log(io);
         });
 
         // when the client emits 'add user', this listens and executes
@@ -26,9 +28,25 @@ module.exports = function(io, numUsers) {
             ++numUsers;
             addedUser = true;
 
-            socket.emit('login', {
-                numUsers: numUsers
+            var clients = io.sockets.sockets.map(function(e) {
+                return {username: e.username, id: e.id, playerData: e.playerData};
             });
+
+
+            var users =  _.filter(clients, 'username');
+            var self = _.findIndex(clients, {id: socket.id});
+
+            if(self >= 0) {
+                users.splice(self, 1);
+            }
+
+
+            socket.emit('init users', {
+                numUsers: numUsers,
+                users: users
+            });
+
+
 
             // echo globally (all clients) that a person has connected
             socket.broadcast.emit('user joined', {
