@@ -1,5 +1,6 @@
-var CGJ = {
-
+var CFG = {
+    width: 800,
+    height: 600,
     fps: 60,
 
     gravity: {
@@ -42,8 +43,8 @@ var CGJ = {
 
         //tipo de jugadores
         type: {
-            PLAYABLE: 'CGJ.playable',
-            ENEMY:    'CGJ.enemy'
+            PLAYABLE: 'CFG.playable',
+            ENEMY:    'CFG.enemy'
         },
 
         //id

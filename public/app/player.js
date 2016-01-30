@@ -23,11 +23,11 @@ function player (name, texture, data, stage, lives) {
     this.data = data;
 
     if (data) {
-        this.id = data.id ? data.id : CGJ.players.default_id;
-        this.sprite.alpha = data.type === CGJ.players.type.ENEMY ? CGJ.players.alpha.ENEMY : CGJ.players.alpha.PLAYABLE;
+        this.id = data.id ? data.id : CFG.players.default_id;
+        this.sprite.alpha = data.type === CFG.players.type.ENEMY ? CFG.players.alpha.ENEMY : CFG.players.alpha.PLAYABLE;
     }
 
-    this.initPosition({x:CGJ.players.type.PLAYABLE ? CGJ.players.default_position.left : -100, y: CGJ.players.default_position.floor});
+    this.initPosition({x:CFG.players.type.PLAYABLE ? CFG.players.default_position.left : -100, y: CFG.players.default_position.floor});
 
 
     //se atachea a una escena
@@ -43,31 +43,31 @@ function player (name, texture, data, stage, lives) {
 
 // constantes
 
-player.prototype.lives = CGJ.players.lives;
+player.prototype.lives = CFG.players.lives;
 
 player.prototype.velocity = {
     running: false,
     fast: false,
     actual: 0,
-    max: CGJ.players.velocity.max,
-    min: CGJ.players.velocity.min
+    max: CFG.players.velocity.max,
+    min: CFG.players.velocity.min
 };
 
 player.prototype.acceleration = {
-    increase: CGJ.players.acceleration.increase,
-    inertia: CGJ.players.acceleration.inertia
+    increase: CFG.players.acceleration.increase,
+    inertia: CFG.players.acceleration.inertia
 };
 
 player.prototype.gravity = {
     actual: 0,
-    max: CGJ.gravity.max,
-    acceleration: CGJ.gravity.acceleration
+    max: CFG.gravity.max,
+    acceleration: CFG.gravity.acceleration
 };
 
 
 player.prototype.jump = {
     jumping: false,
-    force: CGJ.players.jump
+    force: CFG.players.jump
 };
 
 player.prototype.run = function (run, fast) {
@@ -147,7 +147,7 @@ player.prototype.updateServer = function (playerData) {
 // no se lo que quice hacer aca
 player.prototype.update = function (realtime) {
    if (this.data) {
-       if (this.data.type === CGJ.players.type.PLAYABLE) {
+       if (this.data.type === CFG.players.type.PLAYABLE) {
         this._updateSelf(realtime)
        }
    }

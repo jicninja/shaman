@@ -1,12 +1,12 @@
 var width = document.body.clientWidth > 1000 ? document.body.clientWidth : 1000;
 
-var renderer = PIXI.autoDetectRenderer( width , 300,  { transparent: true, view: document.getElementById('header-canvas') });
+var renderer = PIXI.autoDetectRenderer( CFG.width , CFG.height,  { transparent: true, view: document.getElementById('header-canvas') });
 var stage = new PIXI.Container();
 var enemy = [];
 var yetiTexture;
 
 var previous = 0,
-    frameDuration = 1000 / CGJ.fps,
+    frameDuration = 1000 / CFG.fps,
     lag = 0;
 
 var socket = io();
@@ -20,24 +20,17 @@ PIXI.loader
 
 
 function onLoadedCallback(loader, resources) {
-    customBg = new background(resources.texture2.texture, renderer.width , undefined, stage, 0.3);
-    customBg2 = new background(resources.texture.texture, renderer.width , undefined, stage, 0);
-
-    yetiName = prompt('Elija un nombre','Jugador1');
-
+    
+    yetiName = parseInt((Math.random() * 10000));
     yetiTexture = resources.yeti.texture;
-
-    yeti = new player(yetiName, yetiTexture, {type: CGJ.players.type.PLAYABLE}, stage);
+    yeti = new player(yetiName, yetiTexture, {type: CFG.players.type.PLAYABLE}, stage);
     socket.emit('add user', yetiName);
-
-    customBg.tilingSprite.position.y = 50;
-    customBg2.tilingSprite.position.y = 295;
 
     animate();
 }
 
 socket.on('user joined', function(data) {
-    var newEnemy = new player(data.username, yetiTexture, {type: CGJ.players.type.ENEMY, id: data.id}, stage);
+    var newEnemy = new player(data.username, yetiTexture, {type: CFG.players.type.ENEMY, id: data.id}, stage);
     enemy.push(newEnemy);
 });
 
@@ -48,7 +41,7 @@ socket.on('init users', function(data){
         var l = users.length;
         if(users.length) {
             for (var i = 0; i < l ; i++) {
-                var newEnemy = new player(users[i].username, yetiTexture, {type: CGJ.players.type.ENEMY, id: users[i].id}, stage);
+                var newEnemy = new player(users[i].username, yetiTexture, {type: CFG.players.type.ENEMY, id: users[i].id}, stage);
                 var playerData = users[i].playerData;
 
                 if(playerData){
@@ -92,9 +85,6 @@ function animate(timestamp) {
 
     while (lag >= frameDuration) {
 
-        customBg.update(yeti.velocity.running ? yeti.velocity.actual : 0);
-        customBg2.update(yeti.velocity.running ? yeti.velocity.actual : 0);
-
         if(yeti.velocity.running) {
             if(yeti.sprite.position.x > width * 0.3) {
                 stage.position.x -= yeti.velocity.actual;
@@ -105,7 +95,6 @@ function animate(timestamp) {
         yeti.update(socket);
         lag -= frameDuration;
     }
-
 
     renderer.render(stage);
     previous = timestamp;
@@ -160,11 +149,6 @@ function checkKey(e) {
     }
 
 }
-
-window.onresize = function() {
-  width = document.body.clientWidth > 1000 ? document.body.clientWidth : 1000;
-  renderer.resize(width , 300);
-};
 
 
 

@@ -1,10 +1,7 @@
 var _ = require('lodash');
 
-var r = '';
-
 module.exports = function(io, numUsers) {
     var numUsers = 0;
-
 
     io.on('connection', function (socket) {
         var addedUser = false;
