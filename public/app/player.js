@@ -7,10 +7,11 @@
  * @param lives
  */
 
-function player (name, texture, data, stage, lives) {
+function player (name, texture, data, stage, lives, realtime) {
     // se crea el sprite
     this.sprite = new PIXI.Sprite(texture);
-
+    this.realtime = realtime;
+    this.position = {};
     //se crea el nombre
     if (name) {
         this.text = new PIXI.Text(name);
@@ -27,7 +28,6 @@ function player (name, texture, data, stage, lives) {
         this.sprite.alpha = data.type === CFG.players.type.ENEMY ? CFG.players.alpha.ENEMY : CFG.players.alpha.PLAYABLE;
     }
 
-    this.initPosition({x:CFG.players.type.PLAYABLE ? CFG.players.default_position.left : -100, y: CFG.players.default_position.floor});
 
 
     //se atachea a una escena
@@ -39,119 +39,66 @@ function player (name, texture, data, stage, lives) {
         this.lives = lives;
     }
 
+    this.position.x = CFG.players.default_position.left;
+    this.position.y = CFG.players.default_position.top;
+
+    this.setPosition(this.position , false);
+
+
 }
 
 // constantes
 
 player.prototype.lives = CFG.players.lives;
 
-player.prototype.velocity = {
-    running: false,
-    fast: false,
-    actual: 0,
-    max: CFG.players.velocity.max,
-    min: CFG.players.velocity.min
-};
 
-player.prototype.acceleration = {
-    increase: CFG.players.acceleration.increase,
-    inertia: CFG.players.acceleration.inertia
-};
-
-player.prototype.gravity = {
-    actual: 0,
-    max: CFG.gravity.max,
-    acceleration: CFG.gravity.acceleration
-};
-
-
-player.prototype.jump = {
-    jumping: false,
-    force: CFG.players.jump
-};
-
-player.prototype.run = function (run, fast) {
-    this.velocity.running = run ? true : false;
-    this.velocity.fast = fast ? true : false;
-};
 
 //se inicializa la posicion
 
-player.prototype.initPosition = function (position) {
+player.prototype.setPosition = function (position, update) {
     if(!position) {return false;}
-    this.sprite.position.x = position.x;
-    this.sprite.position.y = position.y;
-    this.text.x = position.x;
-    this.floor = position.y;
-    this.text.y = position.y + this.sprite.height;
-}
 
-// salta yeti salta
-player.prototype.DoJump = function () {
-    if (this.jump.jumping){
+    if(typeof position.x !== 'undefined') {
+        this.position.x = position.x;
+    }
+
+    if(typeof position.y !== 'undefined') {
+        this.position.y = position.y;
+    }
+
+
+    this.sprite.position.x = this.position.x;
+    this.sprite.position.y = this.position.y;
+    this.text.x = this.position.x;
+    this.text.y = this.position.y + this.sprite.height;
+
+    if(update === false){
         return false;
     }
-    this.jump.jumping = true;
+    this.realtime.emit('change position', this.position);
 };
 
-// agunataaaa
-player.prototype.stop = function() {
-    this.velocity.running = false;
-    this.velocity.actual = 0;
-};
-
-// se actualiza a si mismo con los controles locos
-player.prototype._updateSelf = function (realtime) {
-
-    //si el loco salta creo gravedad, cosmico
-    if (this.jump.jumping) {
-        this.gravity.actual = this.gravity.actual <= this.gravity.max ? this.gravity.actual + this.gravity.acceleration : this.gravity.max;
-        this.sprite.position.y = this.sprite.position.y - (this.jump.force - this.gravity.actual);
-        if (this.sprite.position.y > this.floor) {
-            this.sprite.position.y = this.floor;
-            this.jump.jumping = false;
-            this.gravity.actual = this.gravity.acceleration;
-        }
-    }
-
-    //si el loco corre
-    if (this.velocity.running) {
-
-        //si el loco corre rapido
-        if (this.velocity.fast) {
-            this.velocity.actual = this.velocity.actual <= this.velocity.max ? this.velocity.actual + this.acceleration.increase : this.velocity.max;
-        } else {
-        //si el loco deja de correr rapido
-            this.velocity.actual = this.velocity.actual >= this.velocity.min ? this.velocity.actual - this.acceleration.inertia : this.velocity.min;
-        }
-
-        //updateame esta posicion
-        this.sprite.position.x = this.sprite.position.x + this.velocity.actual;
-        this.text.x = this.sprite.position.x;
-
-        //se emite coso realtime
-        realtime.emit('change position', {x: this.sprite.position.x, y: this.sprite.position.y});
-    }
-};
 
 //se updatea la posicion desde el server
 
 player.prototype.updateServer = function (playerData) {
-    if(!playerData) {return false}
-    this.sprite.position.x = playerData.x;
-    this.sprite.position.y = playerData.y;
-    this.text.x = this.sprite.position.x;
-};
+
+    if(!playerData ) {return false; }
 
 
-// no se lo que quice hacer aca
-player.prototype.update = function (realtime) {
-   if (this.data) {
-       if (this.data.type === CFG.players.type.PLAYABLE) {
-        this._updateSelf(realtime)
-       }
-   }
+    if(typeof playerData.x !== 'undefined') {
+        this.position.x = playerData.x;
+    }
+
+    if(typeof playerData.y !== 'undefined') {
+        this.position.y = playerData.y;
+    }
+
+
+
+    this.setPosition(this.position, false);
 };
+
 
 // ataccheame esta
 player.prototype.attach = function (stage) {
