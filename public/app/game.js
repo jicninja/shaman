@@ -88,8 +88,6 @@ function animate(timestamp) {
         if(yeti.velocity.running) {
             if(yeti.sprite.position.x > width * 0.3) {
                 stage.position.x -= yeti.velocity.actual;
-                customBg.tilingSprite.position.x += yeti.velocity.actual;
-                customBg2.tilingSprite.position.x += yeti.velocity.actual;
             }
         }
         yeti.update(socket);
