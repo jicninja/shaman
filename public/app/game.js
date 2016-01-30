@@ -4,12 +4,14 @@ var renderer = PIXI.autoDetectRenderer( CFG.width , CFG.height,  { transparent: 
 var stage = new PIXI.Container();
 var enemy = [];
 var yetiTexture;
+var bulletsTextures;
 
 var previous = 0,
     frameDuration = 1000 / CFG.fps,
     lag = 0;
 
 var socket = io();
+var imsocket = {};
 
 
 PIXI.loader
@@ -25,9 +27,11 @@ function onLoadedCallback(loader, resources) {
     yetiName = parseInt((Math.random() * 10000));
     yetiTexture = resources.yeti.texture;
 
-    yeti = new player(yetiName, yetiTexture, {type: CFG.players.type.PLAYABLE}, stage, undefined, socket, {
+    bulletsTextures = {
         bullet1: resources.bullet1.texture
-    });
+    }
+
+    yeti = new player(yetiName, yetiTexture, {type: CFG.players.type.PLAYABLE}, stage, undefined, socket, bulletsTextures);
     socket.emit('add user', yetiName);
 
     animate();
@@ -38,7 +42,16 @@ socket.on('user joined', function(data) {
     enemy.push(newEnemy);
 });
 
+socket.on('render fire', function(data) {
+    var b = new bullet(data, bulletsTextures, '1', stage,  false, socket);
+});
+
+
+
 socket.on('init users', function(data){
+
+    imsocket = {id: data.id, username: data.username}; 
+
     var users = data.users;
 
     if(users) {
@@ -52,6 +65,19 @@ socket.on('init users', function(data){
                 enemy.push(newEnemy);
             }
 
+        }
+    }
+});
+
+socket.on('die', function(data){
+    var toRemove = _.findIndex(enemy, {id: data});
+    if(toRemove >= 0){
+        enemy[toRemove].destroy(stage);
+        enemy.splice(toRemove, 1);
+    }
+    else {
+        if(imsocket.id == data){
+            console.log('DIE!!!!');
         }
     }
 });
@@ -73,7 +99,6 @@ socket.on('change position', function(data) {
 
 function animate(timestamp) {
     requestAnimationFrame(animate);
-
 
     if (!timestamp) timestamp = 0;
     var elapsed = timestamp - previous;

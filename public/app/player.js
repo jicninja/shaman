@@ -7,14 +7,14 @@
  * @param lives
  */
 
-function player (name, texture, data, stage, lives, realtime, bullets) {
+function player (name, texture, data, stage, lives, realtime, bulletTextures) {
     // se crea el sprite
     this.self = this;
     this.sprite = new PIXI.Sprite(texture);
+    this.sprite.anchor = new PIXI.Point(0.5,0.5);
+    this.bulletTextures = bulletTextures;
     this.realtime = realtime;
     this.position = {};
-    this.bullets = [];
-    this.bulletstextures = bullets;
     this.direction = 'right';
 
     this.stage = stage;
@@ -87,8 +87,8 @@ player.prototype.setPosition = function (position, update) {
 
     this.sprite.position.x = this.position.x;
     this.sprite.position.y = this.position.y;
-    this.text.x = this.position.x;
-    this.text.y = this.position.y + this.sprite.height;
+    this.text.x = this.position.x - (this.sprite.width / 4);
+    this.text.y = this.position.y + (this.sprite.height / 2) + 5;
 
     if(update === false){
         return false;
@@ -100,54 +100,12 @@ player.prototype.setPosition = function (position, update) {
 player.prototype.fire = function (type) {
     if(!type) {return false;}
 
-    var newbullet = new PIXI.Sprite(this.bulletstextures.bullet1);
-    newbullet.anchor = new PIXI.Point(0.5,0.5);
-    newbullet.position.x = this.position.x + 35;
-    newbullet.direction = this.direction;
-    newbullet.margin = 20;
-    if(newbullet.direction == 'right'){
-        newbullet.position.x += 35 + newbullet.margin;
-        newbullet.rotation = 0*Math.PI/180;
-    }
-    if(newbullet.direction == 'left'){
-        newbullet.position.x -= 35 + newbullet.margin;
-        newbullet.rotation = 180*Math.PI/180;
-    }
-    newbullet.position.y = this.position.y + 50;
-    if(newbullet.direction == 'up'){
-        newbullet.position.y -= 50 + newbullet.margin;
-        newbullet.rotation = 270*Math.PI/180;
-    }
-    if(newbullet.direction == 'down'){
-        newbullet.position.y += 50 + newbullet.margin;
-        newbullet.rotation = 90*Math.PI/180;
-    }
-    newbullet.typebullet = '1';
-    newbullet.fired = 0;
-
-    if(newbullet.direction == 'right'){
-        createjs.Tween.get(newbullet.position).to({x: newbullet.position.x + 300}, 500).call(this.bulletCollector, [newbullet], this);
-    }
-    if(newbullet.direction == 'left'){
-        createjs.Tween.get(newbullet.position).to({x: newbullet.position.x - 300}, 500).call(this.bulletCollector, [newbullet], this);
-    }
-    if(newbullet.direction == 'up'){
-        createjs.Tween.get(newbullet.position).to({y: newbullet.position.y - 300}, 500).call(this.bulletCollector, [newbullet], this);
-    }
-    if(newbullet.direction == 'down'){
-        createjs.Tween.get(newbullet.position).to({y: newbullet.position.y + 300}, 500).call(this.bulletCollector, [newbullet], this);
-    }
+    var b = new bullet(this, this.bulletTextures, '1', this.stage, true, this.realtime);
     
-    this.stage.addChild(newbullet);
-    //this.bullets.push(newbullet);
-
-    return true;
-    //this.realtime.emit('change position', this.position);
+    return true;    
 };
 
-player.prototype.bulletCollector = function(bullet){
-    this.stage.removeChild(bullet);
-}
+
 
 
 //se updatea la posicion desde el server
