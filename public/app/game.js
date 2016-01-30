@@ -1,6 +1,6 @@
 var width = document.body.clientWidth > 1000 ? document.body.clientWidth : 1000;
 
-var renderer = PIXI.autoDetectRenderer( CFG.width , CFG.height,  { transparent: true, view: document.getElementById('header-canvas') });
+var renderer = PIXI.autoDetectRenderer( CFG.width , CFG.height,  { transparent: true, view: document.getElementById('game-canvas') });
 var stage = new PIXI.Container();
 var enemy = [];
 var yetiTexture;
