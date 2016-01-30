@@ -5,6 +5,7 @@ var stage = new PIXI.Container();
 var enemy = [];
 var yetiTexture;
 var bulletsTextures;
+var yeti;
 
 var previous = 0,
     frameDuration = 1000 / CFG.fps,
@@ -50,7 +51,8 @@ socket.on('render fire', function(data) {
 
 socket.on('init users', function(data){
 
-    imsocket = {id: data.id, username: data.username}; 
+    imsocket = {id: data.id, username: data.username};
+    socket.emit('change position', {x: yeti.sprite.position.x, y: yeti.sprite.position.y});
 
     var users = data.users;
 
