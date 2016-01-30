@@ -23,34 +23,27 @@ function onLoadedCallback(loader, resources) {
     
     yetiName = parseInt((Math.random() * 10000));
     yetiTexture = resources.yeti.texture;
-    yeti = new player(yetiName, yetiTexture, {type: CFG.players.type.PLAYABLE}, stage);
+    yeti = new player(yetiName, yetiTexture, {type: CFG.players.type.PLAYABLE}, stage, undefined, socket);
     socket.emit('add user', yetiName);
 
     animate();
 }
 
 socket.on('user joined', function(data) {
-    var newEnemy = new player(data.username, yetiTexture, {type: CFG.players.type.ENEMY, id: data.id}, stage);
+    var newEnemy = new player(data.username, yetiTexture, {type: CFG.players.type.ENEMY, id: data.id}, stage, undefined, socket);
     enemy.push(newEnemy);
 });
 
 socket.on('init users', function(data){
-
     var users = data.users;
+
     if(users) {
         var l = users.length;
         if(users.length) {
             for (var i = 0; i < l ; i++) {
-                var newEnemy = new player(users[i].username, yetiTexture, {type: CFG.players.type.ENEMY, id: users[i].id}, stage);
+                var newEnemy = new player(users[i].username, yetiTexture, {type: CFG.players.type.ENEMY, id: users[i].id}, stage, undefined, socket);
                 var playerData = users[i].playerData;
-
-                if(playerData){
-
-                    console.log('pos', playerData);
-
-
-                    newEnemy.initPosition({x: playerData.x, y: playerData.y});
-                }
+                newEnemy.setPosition(playerData, false);
 
                 enemy.push(newEnemy);
             }
@@ -84,15 +77,7 @@ function animate(timestamp) {
     lag += elapsed;
 
     while (lag >= frameDuration) {
-
-        if(yeti.velocity.running) {
-            if(yeti.sprite.position.x > width * 0.3) {
-                stage.position.x -= yeti.velocity.actual;
-                customBg.tilingSprite.position.x += yeti.velocity.actual;
-                customBg2.tilingSprite.position.x += yeti.velocity.actual;
-            }
-        }
-        yeti.update(socket);
+        //yeti.update(socket);
         lag -= frameDuration;
     }
 
@@ -102,50 +87,37 @@ function animate(timestamp) {
 }
 
 document.onkeydown = checkKey;
-document.onkeyup = checkKeyUp;
 
 
-function checkKeyUp (e) {
-    e = e || window.event;
-    if (e.keyCode == '39') {
-        // right arrow
-        yeti.run(true, false);
-    }
-}
 
-
-var myElement = document.getElementById('header-canvas');
-var mc = Hammer(myElement);
-
-mc.on('press', function(e) {
-    yeti.run(true, !yeti.velocity.fast);
-});
-
-mc.on('pressup', function(e) {
-    yeti.run(true, false);
-    yeti.DoJump();
-});
 
 function checkKey(e) {
 
     e = e || window.event;
-
+    e.stopPropagation();
     if (e.keyCode == '38') {
         // up arrow
-        yeti.run(true, yeti.velocity.fast);
-        yeti.DoJump();
+        var y =  yeti.position.y;
+        y = y - 10 ;
+        yeti.setPosition({y: y });
     }
     else if (e.keyCode == '40') {
-        yeti.destroy();
         // down arrow
+        var y =  yeti.position.y;
+        y = y + 10 ;
+        yeti.setPosition({y: y });
     }
     else if (e.keyCode == '37') {
         // left arrow
-        yeti.stop();
+        var x =  yeti.position.x;
+        x = x - 10 ;
+        yeti.setPosition({x: x });
     }
     else if (e.keyCode == '39') {
         // right arrow
-        yeti.run(true, true);
+        var x =  yeti.position.x;
+        x = x + 10 ;
+        yeti.setPosition({x: x });
     }
 
 }
