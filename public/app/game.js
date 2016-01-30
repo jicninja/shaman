@@ -16,6 +16,7 @@ PIXI.loader
     .add('texture', 'assets/p2.png')
     .add('yeti', 'assets/yeti.png')
     .add('texture2', 'assets/background.png')
+    .add('bullet1', 'assets/bullet-one.png')
     .load(onLoadedCallback);
 
 
@@ -23,7 +24,10 @@ function onLoadedCallback(loader, resources) {
     
     yetiName = parseInt((Math.random() * 10000));
     yetiTexture = resources.yeti.texture;
-    yeti = new player(yetiName, yetiTexture, {type: CFG.players.type.PLAYABLE}, stage, undefined, socket);
+
+    yeti = new player(yetiName, yetiTexture, {type: CFG.players.type.PLAYABLE}, stage, undefined, socket, {
+        bullet1: resources.bullet1.texture
+    });
     socket.emit('add user', yetiName);
 
     animate();
@@ -118,6 +122,10 @@ function checkKey(e) {
         var x =  yeti.position.x;
         x = x + 10 ;
         yeti.setPosition({x: x });
+    }
+    else if (e.keyCode == '81') {
+        // Q
+        yeti.fire('q');
     }
 
 }

@@ -46,7 +46,7 @@ gulp.task('copyDev', function () {
 });
 
 gulp.task('uglify:vendor', function() {
-    return gulp.src(['./public/app/pixi.js','./public/app/socketio.js','./public/app/lodash.js','./public/app/hammer.js'])
+    return gulp.src(['./public/app/pixi.js','./public/app/tween.js','./public/app/socketio.js','./public/app/lodash.js','./public/app/hammer.js'])
         .pipe(concat('vendor.js'))
         .pipe(uglify())
         .pipe(gulp.dest('./dist/app'))
