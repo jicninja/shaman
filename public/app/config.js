@@ -16,8 +16,8 @@ var CFG = {
 
         //posición inicial
         default_position: {
-            floor: 180,
-            left: 30
+            top: 100,
+            left: 100
         },
 
         //velocidades de correr
