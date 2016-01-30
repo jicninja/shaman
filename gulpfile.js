@@ -8,6 +8,7 @@ var gulp = require('gulp'),
     sass = require('gulp-sass');
     runSequence = require('run-sequence'),
     concat = require('gulp-concat');
+    livereload = require('gulp-livereload');
 
 
 gulp.task('server', function() {
@@ -20,19 +21,29 @@ gulp.task('server', function() {
     });
 });
 
+gulp.task('server:watch', function(){
+    livereload.listen();
+    gulp.run('server');
+    gulp.watch(['index.js', 'server/*'], function(){
+        gulp.run('server');
+        livereload();
+    });
+});
+
 gulp.task('sass', function () {
     gulp.src('./public/assets/sass/*.scss')
         .pipe(sass().on('error', sass.logError))
-        .pipe(gulp.dest('./dist/assets'));
+        .pipe(gulp.dest('./dist/assets'))
+        .pipe(livereload());
 });
 
 gulp.task('sass:watch', function () {
     gulp.watch('./public/assets/sass/*.scss', ['sass']);
 });
 gulp.task('copyDev', function () {
-    gulp.watch( ['./public/**/*','./public/**/**/*'], ['copy']);
+    gulp.run('copy');
+    gulp.watch( ['./public/**/*','./public/**/**/*'], ['copy']);    
 });
-
 
 gulp.task('uglify:vendor', function() {
     return gulp.src(['./public/app/pixi.js','./public/app/socketio.js','./public/app/lodash.js','./public/app/hammer.js'])
@@ -60,7 +71,8 @@ gulp.task('htmlCompile', function() {
 
 gulp.task('copy', function(){
     gulp.src('./public/**')
-        .pipe(gulp.dest('./dist'));
+        .pipe(gulp.dest('./dist'))
+        .pipe(livereload());
 });
 
 gulp.task('copyImages', function(){
@@ -73,7 +85,7 @@ gulp.task('clean', function(){
          .pipe(rimraf());
 });
 
-gulp.task('dev', ['sass:watch', 'copyDev', 'server'] );
+gulp.task('dev', ['sass:watch', 'copyDev', 'server:watch'] );
 
 gulp.task('compile',function() {
     runSequence('clean', 'sass', 'copyImages', 'uglify:vendor','uglify:app', 'htmlCompile');
