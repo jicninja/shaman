@@ -19,7 +19,8 @@ body {
 }
 canvas {
   margin: 0;
-  background-color: #eee; 
+  background: transparent url('bg.jpg') no-repeat center center;
+  background-size: 100% 100%  ;
 }
 
 html, input {
