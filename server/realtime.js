@@ -30,7 +30,6 @@ module.exports = function(io, numUsers) {
                     users.splice(self, 1);
                 }
                 for (var i in users) {
-                  console.log(users[i]);
 
                   if(data.position.x > users[i].playerData.x){
                     var x = data.position.x - users[i].playerData.x;
