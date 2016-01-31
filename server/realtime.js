@@ -143,6 +143,10 @@ module.exports = function(io, numUsers) {
             });
         });
 
+        socket.on('respawn', function() {
+            userslives[socket.id] = 5;
+        });
+
         // when the user disconnects.. perform this
         socket.on('disconnect', function () {
             if (addedUser) {

@@ -172,6 +172,17 @@ function animate(timestamp) {
 
 }
 
+window.addEventListener('click', function() {
+
+    if(yeti.alive) {
+        return false;
+    }
+
+    socket.emit('respawn');
+    yeti.respawn();
+    document.getElementById('respawn').className = 'hide';
+}, true);
+
 window.addEventListener('keydown', checkKey, true);
 window.addEventListener('keyup', function (e) {
 

@@ -98,7 +98,20 @@ function player (name, texture, data, stage, lives, realtime, bulletTextures, an
 
 player.prototype.lives = CFG.players.lives;
 
+
+player.prototype.respawn = function () {
+    this.alive = true;
+    this.shielded = false;
+    this.tomb.visible = false;
+    this.anim.down.visible = true;
+    this.anim.up.visible = false;
+    this.anim.left.visible = false;
+};
+
+
 player.prototype.display_tomb = function () {
+    document.getElementById('respawn').className = '';
+
     this.alive = false;
     this.shielded = false;
     this.tomb.visible = true;
