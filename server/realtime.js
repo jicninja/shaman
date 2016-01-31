@@ -14,15 +14,33 @@ module.exports = function(io, numUsers) {
                 id: socket.id,
                 username: socket.username,
                 data: socket.playerData,
+                life: socket.life,
+                shield: socket.shield
+            });
+        });
+
+        socket.on('shield', function () {
+            
+            var me = socket;
+            me.shield = true;
+            setTimeout(function(){
+                me.shield = false;
+            }, 2000);
+
+           socket.broadcast.emit('change position', {
+                id: socket.id,
+                username: socket.username,
+                data: socket.playerData,
+                life: socket.life,
+                shield: socket.shield
             });
         });
 
         socket.on('fire', function (data) {
-
             var intervalcount = 1;
             var interval = setInterval(function(){
                 var clients = io.sockets.sockets.map(function(e) {
-                    return {username: e.username, id: e.id, playerData: e.playerData};
+                    return {username: e.username, id: e.id, playerData: e.playerData, life: e.life, shield: e.shield};
                 });
                 var users =  _.filter(clients, 'username');
                 var self = _.findIndex(users, {id: socket.id});
@@ -77,11 +95,13 @@ module.exports = function(io, numUsers) {
             // we store the username in the socket session for this client
             socket.username = username;
             socket.playerData = {x: 0, y: 0};
+            socket.life = 5;
+            socket.shield = false;
             ++numUsers;
             addedUser = true;
             
             var clients = io.sockets.sockets.map(function(e) {
-                return {username: e.username, id: e.id, playerData: e.playerData};
+                return {username: e.username, id: e.id, playerData: e.playerData, life: e.life, shield: e.shield};
             });
 
             var users =  _.filter(clients, 'username');
