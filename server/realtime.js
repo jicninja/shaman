@@ -28,11 +28,11 @@ module.exports = function(io, numUsers) {
             }, 2000);
 
            socket.broadcast.emit('change position', {
-                id: socket.id,
-                username: socket.username,
-                data: socket.playerData,
-                life: socket.life,
-                shield: socket.shield
+                id: me.id,
+                username: me.username,
+                data: me.playerData,
+                life: me.life,
+                shield: me.shield
             });
         });
 

@@ -50,6 +50,7 @@ function player (name, texture, data, stage, lives, realtime, bulletTextures, an
     this.stage = stage;
 
     //se crea el nombre
+    this.name = name;
     if (name) {
         this.text = new PIXI.Text(name);
         var style = {font:'bold 10px Arial', fill:'black', align:'center'};
@@ -241,15 +242,22 @@ player.prototype.fire = function (type) {
 player.prototype.updateServer = function (data) {
 
     if(!data ) {return false; }
-
     var self = this;
+
+    console.log(data);
+    console.log(self);
+
+    
     if(data.shield){
         self.shielded = true;
         self.stage.addChild(self.shield);
+        console.log(self.shielded);
         setTimeout(function(){
             self.shielded = false;
             self.stage.removeChild(self.shield);
+            console.log(self.shielded);
         }, 2000);    
+                    
     }
     
     this.lives = data.life;
