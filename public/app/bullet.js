@@ -76,10 +76,13 @@ function bullet(PLayerLauncher, Textures, Type, Stage, Send, realtime, Enemy){
             var y = self.enemy[i].position.y - self.sprite.position.y;
           }
           if(x <= 70 && y <= 70){
-          	var tintsprite = self.enemy[i].sprite;
-          	tintsprite.tint = 0xFF0000;
+          	var tintsprite1 = self.enemy[i].anim.down;
+            var tintsprite2 = self.enemy[i].anim.left;
+            var tintsprite3 = self.enemy[i].anim.up;
+
+              tintsprite1.tint = tintsprite2.tint = tintsprite3.tint = 0xFF0000;
           	setTimeout(function(){
-          		tintsprite.tint = 0xFFFFFF;
+                tintsprite1.tint = tintsprite2.tint = tintsprite3.tint = 0xFFFFFF;
           	}, 250);
 
           	 self.stage.removeChild(self.sprite);
