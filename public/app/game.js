@@ -26,6 +26,10 @@ PIXI.loader
     .add('anim_left', 'assets/caminar_left.json')
 
     .add('bullet1', 'assets/bullet-one.png')
+    .add('bullet2', 'assets/ice_bullet.png')
+    .add('shield', 'assets/shield.png')
+    .add('tomb', 'assets/tomb.png')
+
     .load(onLoadedCallback);
 
 
