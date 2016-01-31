@@ -72,7 +72,7 @@ function onLoadedCallback(loader, resources) {
 }
 
 socket.on('user joined', function(data) {
-    var newEnemy = new player(data.username, yetiTexture, {type: CFG.players.type.ENEMY, id: data.id}, stage, undefined, socket, animations);
+    var newEnemy = new player(data.username, yetiTexture, {type: CFG.players.type.ENEMY, id: data.id}, stage, undefined, socket, undefined, animations);
     enemy.push(newEnemy);
 });
 
@@ -93,7 +93,7 @@ socket.on('init users', function(data){
         var l = users.length;
         if(users.length) {
             for (var i = 0; i < l ; i++) {
-                var newEnemy = new player(users[i].username, yetiTexture, {type: CFG.players.type.ENEMY, id: users[i].id}, stage, undefined, socket, animations);
+                var newEnemy = new player(users[i].username, yetiTexture, {type: CFG.players.type.ENEMY, id: users[i].id}, stage, undefined, socket, undefined , animations);
                 var playerData = users[i].playerData;
                 newEnemy.setPosition(playerData, false);
 
