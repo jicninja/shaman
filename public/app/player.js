@@ -13,9 +13,9 @@ function player (name, texture, data, stage, lives, realtime, bulletTextures, an
     this.sprite = new PIXI.Sprite(texture);
     this.sprite.anchor = new PIXI.Point(0.5,0.5);
 
-    this.shield = new PIXI.Sprite(shieldTexture);
-    this.shield.anchor = new PIXI.Point(0.5,0.5);
-    this.shield.scale = new PIXI.Point(0.8,0.8);
+    this.shieldSprite = new PIXI.Sprite(shieldTexture);
+    this.shieldSprite.anchor = new PIXI.Point(0.5,0.5);
+    this.shieldSprite.scale = new PIXI.Point(0.8,0.8);
     this.shielded = false;
 
     if (animations) {
@@ -82,8 +82,8 @@ function player (name, texture, data, stage, lives, realtime, bulletTextures, an
     this.position.y = CFG.players.default_position.top;
     */
 
-    this.position.x = Math.floor(Math.random() * (CFG.width - 32)) + 32;
-    this.position.y = Math.floor(Math.random() * (CFG.height - 64)) + 64;
+    this.position.x = Math.floor(Math.random() * (CFG.width - 70)) + 70;
+    this.position.y = Math.floor(Math.random() * (CFG.height - 70)) + 70;
 
     this.setPosition(this.position , false);
 
@@ -174,8 +174,8 @@ player.prototype.setPosition = function (position, update) {
     this.anim.down.position.y = this.anim.up.position.y = this.anim.left.position.y =  this.position.y;
     this.text.x = this.position.x + 3 - (this.anim.up.width / 7);
     this.text.y = this.position.y - (25 + this.anim.up.height * CFG.players.size);
-    this.shield.position.x = this.position.x;
-    this.shield.position.y = this.position.y;
+    this.shieldSprite.position.x = this.position.x;
+    this.shieldSprite.position.y = this.position.y;
 
 
     if(update === false){
@@ -206,13 +206,16 @@ player.prototype.fire = function (type) {
         if(this.konami == 'qwwq'){
             var b = new bullet(this, this.bulletTextures, '1', this.stage, true, this.realtime, enemy);            
         }
+        if(this.konami == 'wqew'){
+            var b = new bullet(this, this.bulletTextures, '2', this.stage, true, this.realtime, enemy);            
+        }
         if(this.konami == 'ewwe'){
             this.realtime.emit('shield');
-            this.stage.addChild(this.shield);
+            this.stage.addChild(this.shieldSprite);
             this.shielded = true;
             setTimeout(function(){
                 self.shielded = false;
-                self.stage.removeChild(self.shield);
+                self.stage.removeChild(self.shieldSprite);
             }, 2000);
         }
     }
@@ -227,18 +230,14 @@ player.prototype.updateServer = function (data) {
     if(!data ) {return false; }
     var self = this;
 
-    console.log(data);
-    console.log(self);
-
-    
     if(data.shield){
         self.shielded = true;
-        self.stage.addChild(self.shield);
-        console.log(self.shielded);
+        self.shieldSprite.position.x = data.data.x;
+        self.shieldSprite.position.y = data.data.y;
+        self.stage.addChild(self.shieldSprite);
         setTimeout(function(){
             self.shielded = false;
-            self.stage.removeChild(self.shield);
-            console.log(self.shielded);
+            self.stage.removeChild(self.shieldSprite);
         }, 2000);    
                     
     }

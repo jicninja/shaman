@@ -4,11 +4,18 @@ function bullet(PLayerLauncher, Textures, Type, Stage, Send, realtime, Enemy){
 	this.bulletstextures = Textures;
 	this.stage = Stage;
 	this.realtime = realtime;
-	this.sprite = new PIXI.Sprite(this.bulletstextures.bullet1);
-    this.sprite.anchor = new PIXI.Point(0.5,0.5);
-    this.type = Type;
+	this.type = Type;
     this.enemy = Enemy;
     
+    if(this.type == '1'){
+        this.sprite = new PIXI.Sprite(this.bulletstextures.bullet1);    
+    }
+    else {
+        this.sprite = new PIXI.Sprite(this.bulletstextures.bullet2);
+    }
+    
+    this.sprite.anchor = new PIXI.Point(0.5,0.5);
+
     this.direction = this.player.direction;
     this.margin = 20;
 
