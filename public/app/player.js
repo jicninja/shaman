@@ -229,11 +229,7 @@ player.prototype.fire = function (type) {
         this.konami = this.konami.substr(1, 3) + type;
     }
 
-    var html = '';
-    for (var i = 0; i < 4; i++) {
-        html += '<div class="game-action-btn">' + this.konami.substr(i, 1).toUpperCase() + '</div>';
-    }
-    document.getElementById("game-actions").innerHTML = html;
+
 
     if(this.konami.length >= 4){
         if(this.konami == 'qwwq'){
