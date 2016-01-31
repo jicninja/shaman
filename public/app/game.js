@@ -6,6 +6,7 @@ var enemy = [];
 var yetiTexture;
 var bulletsTextures;
 var yeti;
+var key = [];
 
 var animations = {};
 
@@ -134,7 +135,7 @@ socket.on('change position', function(data) {
 
 function animate(timestamp) {
     requestAnimationFrame(animate);
-
+    checkActions();
     if (!timestamp) timestamp = 0;
     var elapsed = timestamp - previous;
     if (elapsed > 1000) elapsed = frameDuration;
@@ -150,55 +151,69 @@ function animate(timestamp) {
 
 }
 
-document.onkeydown = checkKey;
+window.addEventListener('keydown', checkKey, true);
+window.addEventListener('keyup', function (e) {
 
+    if (e.keyCode == '81' || e.keyCode == '87' || e.keyCode == '69' || e.keyCode == '82') {
+        return false;
+    }
 
+    delete key[e.keyCode];
+
+}, true);
 
 
 function checkKey(e) {
 
-    e = e || window.event;
-    e.stopPropagation();
-    if (e.keyCode == '38') {
-        // up arrow
-        var y =  yeti.position.y;
-        y = y - 10 ;
-        yeti.setPosition({y: y, x: yeti.position.x });
-    }
-    else if (e.keyCode == '40') {
-        // down arrow
-        var y =  yeti.position.y;
-        y = y + 10 ;
-        yeti.setPosition({y: y, x: yeti.position.x });
-    }
-    else if (e.keyCode == '37') {
-        // left arrow
-        var x =  yeti.position.x;
-        x = x - 10 ;
-        yeti.setPosition({x: x, y: yeti.position.y });
-    }
-    else if (e.keyCode == '39') {
-        // right arrow
-        var x =  yeti.position.x;
-        x = x + 10 ;
-        yeti.setPosition({x: x, y: yeti.position.y });
-    }
-    else if (e.keyCode == '81') {
+    key[e.keyCode] = true;
+
+
+    if (e.keyCode == '81') {
         yeti.fire('q');
     }
-    else if (e.keyCode == '87') {
+    if (e.keyCode == '87') {
         yeti.fire('w');
     }
-    else if (e.keyCode == '69') {
+     if (e.keyCode == '69') {
         yeti.fire('e');
     }
-    else if (e.keyCode == '82') {
+     if (e.keyCode == '82') {
         yeti.fire('r');
     }
 
+
+
 }
 
+function checkActions () {
+    if (key['38']) {
+        // up arrow
+        var y =  yeti.position.y;
+        y = y - CFG.players.velocity.min ;
+        yeti.setPosition({y: y, x: yeti.position.x });
+    }
+    else if (key['40']) {
+        // down arrow
+        var y =  yeti.position.y;
+        y = y + CFG.players.velocity.min ;
+        yeti.setPosition({y: y, x: yeti.position.x });
+    }
+     if (key['37']) {
+        // left arrow
+        var x =  yeti.position.x;
+        x = x - CFG.players.velocity.min ;
+        yeti.setPosition({x: x, y: yeti.position.y });
+    }
+    else if (key['39']) {
+        // right arrow
+        var x =  yeti.position.x;
+        x = x + CFG.players.velocity.min ;
+        yeti.setPosition({x: x, y: yeti.position.y });
+    }
 
+
+
+}
 
 
 
