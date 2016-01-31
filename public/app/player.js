@@ -7,11 +7,32 @@
  * @param lives
  */
 
-function player (name, texture, data, stage, lives, realtime, bulletTextures) {
+function player (name, texture, data, stage, lives, realtime, bulletTextures, animations) {
     // se crea el sprite
     this.self = this;
     this.sprite = new PIXI.Sprite(texture);
     this.sprite.anchor = new PIXI.Point(0.5,0.5);
+
+    if (animations) {
+        this.anim = {
+            down: new PIXI.extras.MovieClip(animations.down),
+            up: new PIXI.extras.MovieClip(animations.up),
+            left: new PIXI.extras.MovieClip(animations.left)
+        };
+
+        this.anim.down.animationSpeed = this.anim.up.animationSpeed = this.anim.left.animationSpeed  = 0.2;
+        this.anim.down.anchor = this.anim.up.anchor = this.anim.left.anchor = new PIXI.Point(0.5,0.5);
+
+        this.anim.up.visible = false;
+        this.anim.left.visible = false;
+
+        this.anim.down.play();
+        this.anim.left.play();
+        this.anim.up.play();
+
+    }
+
+
     this.bulletTextures = bulletTextures;
     this.realtime = realtime;
     this.position = {};
@@ -68,9 +89,18 @@ player.prototype.setPosition = function (position, update) {
     if(typeof position.x !== 'undefined') {
         if(position.x > this.position.x){
             this.direction = 'right';
+            this.anim.up.visible = false;
+            this.anim.down.visible = false;
+            this.anim.left.visible = true;
+            this.anim.left.scale = {x:-1, y:1};
         }
         else {
             this.direction = 'left';
+            this.anim.up.visible = false;
+            this.anim.down.visible = false;
+            this.anim.left.visible = true;
+            this.anim.left.scale = {x:1, y:1};
+
         }
         this.position.x = position.x;
     }
@@ -78,17 +108,23 @@ player.prototype.setPosition = function (position, update) {
     if(typeof position.y !== 'undefined') {
         if(position.y < this.position.y){
             this.direction = 'up';
+            this.anim.up.visible = true;
+            this.anim.down.visible = false;
+            this.anim.left.visible = false;
         }
         else {
             this.direction = 'down';
+            this.anim.up.visible = false;
+            this.anim.down.visible = true;
+            this.anim.left.visible = false;
         }
         this.position.y = position.y;
     }
 
-    this.sprite.position.x = this.position.x;
-    this.sprite.position.y = this.position.y;
-    this.text.x = this.position.x - (this.sprite.width / 4);
-    this.text.y = this.position.y + (this.sprite.height / 2) + 5;
+    this.anim.down.position.x = this.anim.up.position.x =  this.anim.left.position.x = this.position.x;
+    this.anim.down.position.y = this.anim.up.position.y = this.anim.left.position.y =  this.position.y;
+    this.text.x = this.position.x - (this.anim.up.width / 4);
+
 
     if(update === false){
         return false;
@@ -132,6 +168,10 @@ player.prototype.updateServer = function (playerData) {
 // ataccheame esta
 player.prototype.attach = function (stage) {
     stage.addChild(this.sprite);
+    stage.addChild(this.anim.down);
+    stage.addChild(this.anim.up);
+    stage.addChild(this.anim.left);
+
     if(this.text) {
         stage.addChild(this.text);
     }
@@ -140,7 +180,7 @@ player.prototype.attach = function (stage) {
 // borra todo
 player.prototype.destroy = function (stage) {
   if(!stage) {return false};
-    stage.removeChild(this.sprite);
+    stage.removeChild(this.anim.down);
     if(this.text){
         stage.removeChild(this.text);
     }
