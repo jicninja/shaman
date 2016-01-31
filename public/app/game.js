@@ -143,7 +143,7 @@ socket.on('user left', function(data){
 
 socket.on('change position', function(data) {
     var toUpdate = _.find(enemy, {id: data.id});
-    if(toUpdate) { toUpdate.updateServer(data.data)}
+    if(toUpdate) { toUpdate.updateServer(data);}
 });
 
 function animate(timestamp) {

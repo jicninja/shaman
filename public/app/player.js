@@ -16,7 +16,6 @@ function player (name, texture, data, stage, lives, realtime, bulletTextures, an
     this.shield = new PIXI.Sprite(shieldTexture);
     this.shield.anchor = new PIXI.Point(0.5,0.5);
     this.shield.scale = new PIXI.Point(0.8,0.8);
-    this.shield.visible = false;
     this.shielded = false;
 
     if (animations) {
@@ -208,11 +207,11 @@ player.prototype.fire = function (type) {
         }
         if(this.konami == 'ewwe'){
             this.realtime.emit('shield');
-            this.shield.visible = true;
+            this.stage.addChild(this.shield);
             this.shielded = true;
             setTimeout(function(){
-                self.shield.visible = false;
-                this.shielded = false;
+                self.shielded = false;
+                self.stage.removeChild(self.shield);
             }, 2000);
         }
     }
@@ -222,11 +221,22 @@ player.prototype.fire = function (type) {
 
 //se updatea la posicion desde el server
 
-player.prototype.updateServer = function (playerData) {
+player.prototype.updateServer = function (data) {
 
-    if(!playerData ) {return false; }
+    if(!data ) {return false; }
 
-    this.setPosition(playerData, false);
+    var self = this;
+    if(data.shield){
+        self.shielded = true;
+        self.stage.addChild(self.shield);
+        setTimeout(function(){
+            self.shielded = false;
+            self.stage.removeChild(self.shield);
+        }, 2000);    
+    }
+    
+    this.lives = data.life;
+    this.setPosition(data.data, false);
 };
 
 
@@ -235,8 +245,7 @@ player.prototype.attach = function (stage) {
     stage.addChild(this.anim.down);
     stage.addChild(this.anim.up);
     stage.addChild(this.anim.left);
-    stage.addChild(this.shield);
-
+    
     if(this.text) {
         stage.addChild(this.text);
     }
