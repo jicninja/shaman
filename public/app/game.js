@@ -17,7 +17,7 @@ var previous = 0,
 
 var socket = io();
 var imsocket = {};
-
+var tombt;
 
 PIXI.loader
     .add('yeti', 'assets/yeti.png')
@@ -29,7 +29,7 @@ PIXI.loader
     .add('bullet1', 'assets/bullet-one.png')
     .add('bullet2', 'assets/bullet-two.png')
     .add('shieldt', 'assets/shield.png')
-    .add('tomb', 'assets/tomb.png')
+    .add('tomb_texture', 'assets/tomb.png')
     .add('shield', 'assets/shield.png')
 
     
@@ -43,6 +43,7 @@ function onLoadedCallback(loader, resources) {
     yetiTexture = resources.yeti.texture;
 
     shieldTexture = resources.shieldt.texture;
+    tombt = resources.tomb_texture.texture;
 
     bulletsTextures = {
         bullet1: resources.bullet1.texture,
@@ -77,7 +78,7 @@ function onLoadedCallback(loader, resources) {
 
 
 
-    yeti = new player(yetiName, yetiTexture, {type: CFG.players.type.PLAYABLE}, stage, undefined, socket, bulletsTextures, animations,  shieldTexture);
+    yeti = new player(yetiName, yetiTexture, {type: CFG.players.type.PLAYABLE}, stage, undefined, socket, bulletsTextures, animations,  shieldTexture, tombt);
     socket.emit('add user', yetiName);
 
 
@@ -86,7 +87,7 @@ function onLoadedCallback(loader, resources) {
 }
 
 socket.on('user joined', function(data) {
-    var newEnemy = new player(data.username, yetiTexture, {type: CFG.players.type.ENEMY, id: data.id}, stage, undefined, socket, undefined, animations, shieldTexture);
+    var newEnemy = new player(data.username, yetiTexture, {type: CFG.players.type.ENEMY, id: data.id}, stage, undefined, socket, undefined, animations, shieldTexture, tombt);
     enemy.push(newEnemy);
 });
 
@@ -122,6 +123,7 @@ socket.on('init users', function(data){
 socket.on('die', function(data){
     var toRemove = _.findIndex(enemy, {id: data});
     if(toRemove >= 0){
+        enemy[toRemove].display_tomb();
         enemy[toRemove].destroy(stage);
         enemy.splice(toRemove, 1);
     }
