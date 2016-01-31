@@ -25,6 +25,8 @@ function player (name, texture, data, stage, lives, realtime, bulletTextures, an
 
         this.anim.up.visible = false;
         this.anim.left.visible = false;
+        this.anim.down.scale = {x: CFG.players.size, y: CFG.players.size};
+        this.anim.up.scale = {x: CFG.players.size, y: CFG.players.size};
 
 
 
@@ -125,7 +127,7 @@ player.prototype.setPosition = function (position, update) {
             this.anim.up.visible = false;
             this.anim.down.visible = false;
             this.anim.left.visible = true;
-            this.anim.left.scale = {x:-1, y:1};
+            this.anim.left.scale = {x:-CFG.players.size, y:CFG.players.size};
 
         }
         else {
@@ -133,7 +135,7 @@ player.prototype.setPosition = function (position, update) {
             this.anim.up.visible = false;
             this.anim.down.visible = false;
             this.anim.left.visible = true;
-            this.anim.left.scale = {x:1, y:1};
+            this.anim.left.scale = {x:CFG.players.size, y:CFG.players.size};
 
         }
         this.position.x = position.x;
@@ -161,7 +163,8 @@ player.prototype.setPosition = function (position, update) {
 
     this.anim.down.position.x = this.anim.up.position.x =  this.anim.left.position.x = this.position.x;
     this.anim.down.position.y = this.anim.up.position.y = this.anim.left.position.y =  this.position.y;
-    this.text.x = this.position.x - (this.anim.up.width / 4);
+    this.text.x = this.position.x + 3 - (this.anim.up.width / 7);
+    this.text.y = this.position.y - (25 + this.anim.up.height * CFG.players.size);
 
 
     if(update === false){

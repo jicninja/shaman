@@ -53,6 +53,8 @@ function bullet(PLayerLauncher, Textures, Type, Stage, Send, realtime, Enemy){
     if(this.direction == 'down'){
         this.animation = {y: this.sprite.position.y + 300};
     }
+    createjs.Ticker.setInterval(25);
+    createjs.Ticker.setFPS(60);
 
     createjs.Tween.get(this.sprite.position).to(this.animation, 500).call(this.bulletCollector, [], this);
 
