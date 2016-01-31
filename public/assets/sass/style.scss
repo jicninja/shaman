@@ -223,7 +223,6 @@ ul {
 }
 
 #game-blood {
-  display: none;
   z-index: 2000;
   position: fixed;
   background: url(blood.png) no-repeat center center;
@@ -232,10 +231,21 @@ ul {
   height: 100%;
   top: 0px;
   left: 0px;
+  opacity: 0;
+  -webkit-transition: opacity 150ms ease-out 100ms;
+  -moz-transition: opacity 150ms ease-out 100ms;
+  -o-transition: opacity 150ms ease-out 100ms;
+  transition: opacity 150ms ease-out 100ms;
+
 }
 
 #game-blood.active {
-  display: block;
+  -webkit-transition: opacity 150ms ease-out 100ms;
+  -moz-transition: opacity 150ms ease-out 100ms;
+  -o-transition: opacity 150ms ease-out 100ms;
+  transition: opacity 150ms ease-out 100ms;
+  opacity: 1;
+
 }
 
 #game-status-r{
