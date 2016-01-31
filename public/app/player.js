@@ -7,13 +7,13 @@
  * @param lives
  */
 
-function player (name, texture, data, stage, lives, realtime, bulletTextures, animations, shieldT, tombtexture) {
+function player (name, texture, data, stage, lives, realtime, bulletTextures, animations, shieldT) {
     // se crea el sprite
     var self = this;
     this.sprite = new PIXI.Sprite(texture);
     this.sprite.anchor = new PIXI.Point(0.5,0.5);
     this.alive = true;
-    this.tomb = new PIXI.Sprite(tombtexture);
+    this.tomb = new PIXI.Sprite(tombt);
     this.tomb.anchor = new PIXI.Point(0.5,0.5);
     this.tomb.visible = false;
 

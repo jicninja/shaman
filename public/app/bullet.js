@@ -66,31 +66,31 @@ function bullet(PLayerLauncher, Textures, Type, Stage, Send, realtime, Enemy){
     createjs.Tween.get(this.sprite.position).to(this.animation, 500).call(this.bulletCollector, [], this);
 
     var intervalcount = 1;
+    var customenemy = _.clone(self.enemy);
+    customenemy.push(yeti);
     var interval = setInterval(function(){
-
-        self.enemy.push(yeti);
     	
-        for (var i in self.enemy) {
-          if(self.enemy[i].shielded == false){
+        for (var i in customenemy) {
+          if(customenemy[i].shielded == false){
 
-              if(self.sprite.position.x > self.enemy[i].position.x){
-                var x = self.sprite.position.x - self.enemy[i].position.x;
+              if(self.sprite.position.x > customenemy[i].position.x){
+                var x = self.sprite.position.x - customenemy[i].position.x;
               }
               else {
-                var x = self.enemy[i].position.x - self.sprite.position.x;
+                var x = customenemy[i].position.x - self.sprite.position.x;
               }
-              if(self.sprite.position.y > self.enemy[i].position.y){
-                var y = self.sprite.position.y - self.enemy[i].position.y;
+              if(self.sprite.position.y > customenemy[i].position.y){
+                var y = self.sprite.position.y - customenemy[i].position.y;
               }
               else {
-                var y = self.enemy[i].position.y - self.sprite.position.y;
+                var y = customenemy[i].position.y - self.sprite.position.y;
               }
               if(x <= 70 && y <= 70){
-                var tintsprite1 = self.enemy[i].anim.down;
-                var tintsprite2 = self.enemy[i].anim.left;
-                var tintsprite3 = self.enemy[i].anim.up;
+                var tintsprite1 = customenemy[i].anim.down;
+                var tintsprite2 = customenemy[i].anim.left;
+                var tintsprite3 = customenemy[i].anim.up;
 
-                if(self.enemy[i].player){
+                if(customenemy[i].player){
                     document.getElementById("game-blood").className = 'active';
                     setTimeout(function(){
                         document.getElementById("game-blood").className = '';
