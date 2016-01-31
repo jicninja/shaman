@@ -4,6 +4,7 @@ var renderer = PIXI.autoDetectRenderer( CFG.width , CFG.height,  { transparent: 
 var stage = new PIXI.Container();
 var enemy = [];
 var yetiTexture;
+var ballTexture;
 var bulletsTextures;
 var yeti;
 var key = [];
@@ -21,6 +22,7 @@ var tombt;
 
 PIXI.loader
     .add('yeti', 'assets/yeti.png')
+    .add('ball', 'assets/sball.png')
     .add('anim_down', 'assets/caminar_down.json')
     .add('anim_up', 'assets/caminar_up.json')
 
@@ -28,11 +30,8 @@ PIXI.loader
 
     .add('bullet1', 'assets/bullet-one.png')
     .add('bullet2', 'assets/bullet-two.png')
-    .add('shieldt', 'assets/shield.png')
-    .add('tomb_texture', 'assets/tomb.png')
-    .add('shield', 'assets/shield.png')
-
-    
+    .add('tomb_texture', 'assets/tomb.png')    
+    .add('barsh', 'assets/barsh.png')
 
     .load(onLoadedCallback);
 
@@ -42,7 +41,7 @@ function onLoadedCallback(loader, resources) {
     yetiName = parseInt((Math.random() * 10000));
     yetiTexture = resources.yeti.texture;
 
-    shieldTexture = resources.shieldt.texture;
+    ballTexture = resources.ball.texture;
     tombt = resources.tomb_texture.texture;
 
     bulletsTextures = {
@@ -76,11 +75,8 @@ function onLoadedCallback(loader, resources) {
 
     animations.left = frames_left;
 
-
-
     yeti = new player(yetiName, yetiTexture, {type: CFG.players.type.PLAYABLE}, stage, undefined, socket, bulletsTextures, animations,  shieldTexture, tombt);
     socket.emit('add user', yetiName);
-
 
     document.getElementById("loader").className = '';
     animate();
@@ -112,7 +108,6 @@ socket.on('init users', function(data){
                 var newEnemy = new player(users[i].username, yetiTexture, {type: CFG.players.type.ENEMY, id: users[i].id}, stage, undefined, socket, undefined , animations);
                 var playerData = users[i].playerData;
                 newEnemy.setPosition(playerData, false);
-
                 enemy.push(newEnemy);
             }
 
@@ -122,15 +117,25 @@ socket.on('init users', function(data){
 
 socket.on('die', function(data){
     var toRemove = _.findIndex(enemy, {id: data});
+    console.log(data);
+    console.log(toRemove);
     if(toRemove >= 0){
         enemy[toRemove].display_tomb();
-        enemy[toRemove].destroy(stage);
-        enemy.splice(toRemove, 1);
+        //enemy[toRemove].destroy(stage);
+        //enemy.splice(toRemove, 1);
+    }    
+    if(imsocket.id == data){
+        yeti.display_tomb();
+        console.log('DIE!!!!');
     }
-    else {
-        if(imsocket.id == data){
-            console.log('DIE!!!!');
-        }
+    
+});
+
+socket.on('hit', function(data){
+    if(imsocket.id == data){
+        yeti.lives--;
+        var opacity = 1 - (0.2 * yeti.lives);
+        document.getElementById("game-status-life-opacity").style.opacity = opacity; 
     }
 });
 

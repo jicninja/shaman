@@ -12,7 +12,7 @@ var CFG = {
     players : {
         size: 0.4,
         //vidas
-        lives: 3,
+        lives: 5,
 
         //posición inicial
         default_position: {

@@ -1,5 +1,7 @@
 var _ = require('lodash');
 
+var userslives = [];
+
 module.exports = function(io, numUsers) {
     var numUsers = 0;
 
@@ -61,8 +63,20 @@ module.exports = function(io, numUsers) {
                   else {
                     var y = users[i].playerData.y - data.position.y;
                   }
-                  if(x <= 70 && y <= 70){                        
-                     socket.broadcast.emit('die', users[i].id);
+                  if(x <= 70 && y <= 70){
+                     if(users[i].shield == false){
+                        
+                         console.log(userslives[users[i].id]);
+                         if(userslives[users[i].id] >= 2){
+                            userslives[users[i].id]--;
+                            socket.broadcast.emit('hit', users[i].id);
+                         }
+                         else {
+                            socket.broadcast.emit('die', users[i].id);
+                            socket.emit('die', users[i].id);   
+                         }
+                         clearInterval(interval);
+                     }                                          
                   }  
                 }
                 if(data.direction == 'left'){
@@ -95,6 +109,7 @@ module.exports = function(io, numUsers) {
             // we store the username in the socket session for this client
             socket.username = username;
             socket.playerData = {x: 0, y: 0};
+            console.log("ADD USER!");
             socket.life = 5;
             socket.shield = false;
             ++numUsers;
@@ -110,6 +125,8 @@ module.exports = function(io, numUsers) {
             if(self >= 0) {
                 users.splice(self, 1);
             }
+
+            userslives[socket.id] = 5;
 
             socket.emit('init users', {
                 id: socket.id,

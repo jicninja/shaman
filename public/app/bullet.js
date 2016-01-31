@@ -67,43 +67,45 @@ function bullet(PLayerLauncher, Textures, Type, Stage, Send, realtime, Enemy){
 
     var intervalcount = 1;
     var interval = setInterval(function(){
-    	
-    	self.enemy.push(yeti);
+
+        self.enemy.push(yeti);
     	
         for (var i in self.enemy) {
+          if(self.enemy[i].shielded == false){
 
-          if(self.sprite.position.x > self.enemy[i].position.x){
-            var x = self.sprite.position.x - self.enemy[i].position.x;
-          }
-          else {
-            var x = self.enemy[i].position.x - self.sprite.position.x;
-          }
-          if(self.sprite.position.y > self.enemy[i].position.y){
-            var y = self.sprite.position.y - self.enemy[i].position.y;
-          }
-          else {
-            var y = self.enemy[i].position.y - self.sprite.position.y;
-          }
-          if(x <= 70 && y <= 70){
-          	var tintsprite1 = self.enemy[i].anim.down;
-            var tintsprite2 = self.enemy[i].anim.left;
-            var tintsprite3 = self.enemy[i].anim.up;
+              if(self.sprite.position.x > self.enemy[i].position.x){
+                var x = self.sprite.position.x - self.enemy[i].position.x;
+              }
+              else {
+                var x = self.enemy[i].position.x - self.sprite.position.x;
+              }
+              if(self.sprite.position.y > self.enemy[i].position.y){
+                var y = self.sprite.position.y - self.enemy[i].position.y;
+              }
+              else {
+                var y = self.enemy[i].position.y - self.sprite.position.y;
+              }
+              if(x <= 70 && y <= 70){
+                var tintsprite1 = self.enemy[i].anim.down;
+                var tintsprite2 = self.enemy[i].anim.left;
+                var tintsprite3 = self.enemy[i].anim.up;
 
-            if(self.enemy[i].player){
-                document.getElementById("game-blood").className = 'active';
+                if(self.enemy[i].player){
+                    document.getElementById("game-blood").className = 'active';
+                    setTimeout(function(){
+                        document.getElementById("game-blood").className = '';
+                    }, 500);
+                }
+
+                tintsprite1.tint = tintsprite2.tint = tintsprite3.tint = 0xFF0000;
                 setTimeout(function(){
-                    document.getElementById("game-blood").className = '';
+                    tintsprite1.tint = tintsprite2.tint = tintsprite3.tint = 0xFFFFFF;
                 }, 500);
-            }
 
+                 self.stage.removeChild(self.sprite);
+              }
 
-            tintsprite1.tint = tintsprite2.tint = tintsprite3.tint = 0xFF0000;
-          	setTimeout(function(){
-                tintsprite1.tint = tintsprite2.tint = tintsprite3.tint = 0xFFFFFF;
-          	}, 500);
-
-          	 self.stage.removeChild(self.sprite);
-          }  
+          } 
         }
         intervalcount++;
         if(intervalcount >= 5){
