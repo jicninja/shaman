@@ -9,13 +9,14 @@
 
 function player (name, texture, data, stage, lives, realtime, bulletTextures) {
     // se crea el sprite
-    this.self = this;
+    var self = this;
     this.sprite = new PIXI.Sprite(texture);
     this.sprite.anchor = new PIXI.Point(0.5,0.5);
     this.bulletTextures = bulletTextures;
     this.realtime = realtime;
     this.position = {};
     this.direction = 'right';
+    this.player = true;
     
     this.stage = stage;
 
@@ -35,6 +36,10 @@ function player (name, texture, data, stage, lives, realtime, bulletTextures) {
         //this.sprite.alpha = data.type === CFG.players.type.ENEMY ? CFG.players.alpha.ENEMY : CFG.players.alpha.PLAYABLE;
     }
 
+    if(data.type === CFG.players.type.ENEMY){
+        this.player = false;
+    }
+
 
 
     //se atachea a una escena
@@ -46,8 +51,13 @@ function player (name, texture, data, stage, lives, realtime, bulletTextures) {
         this.lives = lives;
     }
 
+    /*
     this.position.x = CFG.players.default_position.left;
     this.position.y = CFG.players.default_position.top;
+    */
+
+    this.position.x = Math.floor(Math.random() * 800) + 1;
+    this.position.y = Math.floor(Math.random() * 600) + 1;
 
     this.setPosition(this.position , false);
 
@@ -64,6 +74,30 @@ player.prototype.lives = CFG.players.lives;
 
 player.prototype.setPosition = function (position, update) {
     if(!position) {return false;}
+
+    for (var i in enemy) {
+      if(enemy[i].id != this.id){
+        console.log('enemy: ' + enemy[i].position.x + ' ' + enemy[i].position.y);
+        console.log('new: ' + position.x + ' ' + position.y);
+        if(position.x > enemy[i].position.x){
+            var x = position.x - enemy[i].position.x;
+          }
+          else {
+            var x = enemy[i].position.x - position.x;
+          }
+          if(position.y > enemy[i].position.y){
+            var y = position.y - enemy[i].position.y;
+          }
+          else {
+            var y = enemy[i].position.y - position.y;
+          }
+
+          if(x <= 70 && y <= 70){
+            console.log('IN');
+            return false;
+          } 
+      }       
+    }
 
     if(typeof position.x !== 'undefined') {
         if(position.x > this.position.x){

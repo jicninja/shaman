@@ -52,7 +52,7 @@ socket.on('render fire', function(data) {
 socket.on('init users', function(data){
 
     imsocket = {id: data.id, username: data.username};
-    socket.emit('change position', {x: yeti.sprite.position.x, y: yeti.sprite.position.y});
+    socket.emit('change position', {x: yeti.position.x, y: yeti.position.y});
 
     var users = data.users;
 
@@ -130,25 +130,25 @@ function checkKey(e) {
         // up arrow
         var y =  yeti.position.y;
         y = y - 10 ;
-        yeti.setPosition({y: y });
+        yeti.setPosition({y: y, x: yeti.position.x });
     }
     else if (e.keyCode == '40') {
         // down arrow
         var y =  yeti.position.y;
         y = y + 10 ;
-        yeti.setPosition({y: y });
+        yeti.setPosition({y: y, x: yeti.position.x });
     }
     else if (e.keyCode == '37') {
         // left arrow
         var x =  yeti.position.x;
         x = x - 10 ;
-        yeti.setPosition({x: x });
+        yeti.setPosition({x: x, y: yeti.position.y });
     }
     else if (e.keyCode == '39') {
         // right arrow
         var x =  yeti.position.x;
         x = x + 10 ;
-        yeti.setPosition({x: x });
+        yeti.setPosition({x: x, y: yeti.position.y });
     }
     else if (e.keyCode == '81') {
         // Q
