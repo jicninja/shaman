@@ -18,9 +18,7 @@ body {
   padding: 0;
 }
 canvas {
-  margin: 0;
-  background: transparent url('bg.jpg') no-repeat center center;
-  background-size: 100% 100%  ;
+  margin: 0;  
 }
 
 html, input {
@@ -180,6 +178,8 @@ ul {
   top: 0px;
   left: 0px;
   z-index: 500;
+  background: transparent url('bg.jpg') no-repeat center center;
+  background-size: cover;
 }
 
 #game-canvas {

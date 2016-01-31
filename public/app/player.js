@@ -28,8 +28,6 @@ function player (name, texture, data, stage, lives, realtime, bulletTextures, an
         this.anim.down.scale = {x: CFG.players.size, y: CFG.players.size};
         this.anim.up.scale = {x: CFG.players.size, y: CFG.players.size};
 
-
-
     }
 
 
@@ -45,7 +43,7 @@ function player (name, texture, data, stage, lives, realtime, bulletTextures, an
     //se crea el nombre
     if (name) {
         this.text = new PIXI.Text(name);
-        var style = {font:'bold 10px Arial', fill:'green', align:'center'};
+        var style = {font:'bold 10px Arial', fill:'black', align:'center'};
         this.text.style = style;
     }
 
