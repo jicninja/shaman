@@ -284,6 +284,9 @@ player.prototype.attach = function (stage) {
 player.prototype.destroy = function (stage) {
   if(!stage) {return false};
     stage.removeChild(this.anim.down);
+    stage.removeChild(this.anim.up);
+    stage.removeChild(this.anim.left);
+
     if(this.text){
         stage.removeChild(this.text);
     }
