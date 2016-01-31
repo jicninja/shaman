@@ -8,10 +8,10 @@ function bullet(PLayerLauncher, Textures, Type, Stage, Send, realtime, Enemy){
     this.enemy = Enemy;
     
     if(this.type == '1'){
-        this.sprite = new PIXI.Sprite(this.bulletstextures.bullet1);    
+        this.sprite = new PIXI.Sprite(bulletsTextures.bullet1);    
     }
     else {
-        this.sprite = new PIXI.Sprite(this.bulletstextures.bullet2);
+        this.sprite = new PIXI.Sprite(bulletsTextures.bullet2);
     }
     
     this.sprite.anchor = new PIXI.Point(0.5,0.5);

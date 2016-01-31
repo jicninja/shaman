@@ -19,7 +19,7 @@ function player (name, texture, data, stage, lives, realtime, bulletTextures, an
 
     this.shieldSprite = new PIXI.Sprite(shieldTexture);
     this.shieldSprite.anchor = new PIXI.Point(0.5,0.5);
-    this.shieldSprite.scale = new PIXI.Point(0.8,0.8);
+    //this.shieldSprite.scale = new PIXI.Point(0.8,0.8);
     this.shielded = false;
 
     if (animations) {
@@ -101,7 +101,6 @@ player.prototype.lives = CFG.players.lives;
 player.prototype.display_tomb = function () {
     this.alive = false;
     this.shielded = false;
-    this.shield.visible = false;
     this.tomb.visible = true;
     this.anim.down.visible = false;
     this.anim.up.visible = false;
