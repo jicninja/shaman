@@ -1,0 +1,58 @@
+{"frames": {
+
+"Caminar_c_01.png":
+{
+	"frame": {"x":1,"y":1,"w":130,"h":221},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":72,"y":17,"w":130,"h":221},
+	"sourceSize": {"w":256,"h":256}
+},
+"Caminar_c_02.png":
+{
+	"frame": {"x":133,"y":1,"w":131,"h":226},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":80,"y":17,"w":131,"h":226},
+	"sourceSize": {"w":256,"h":256}
+},
+"Caminar_c_03.png":
+{
+	"frame": {"x":266,"y":1,"w":131,"h":221},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":89,"y":19,"w":131,"h":221},
+	"sourceSize": {"w":256,"h":256}
+},
+"Caminar_c_04.png":
+{
+	"frame": {"x":399,"y":1,"w":133,"h":218},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":91,"y":19,"w":133,"h":218},
+	"sourceSize": {"w":256,"h":256}
+},
+"Caminar_c_05.png":
+{
+	"frame": {"x":534,"y":1,"w":131,"h":227},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":85,"y":11,"w":131,"h":227},
+	"sourceSize": {"w":256,"h":256}
+},
+"Caminar_c_06.png":
+{
+	"frame": {"x":667,"y":1,"w":131,"h":231},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":77,"y":7,"w":131,"h":231},
+	"sourceSize": {"w":256,"h":256}
+}},
+"meta": {
+	"version": "1.0",
+	"image": "caminar_left.png",
+	"format": "RGBA8888",
+	"size": {"w":799,"h":233},
+	"scale": "1"
+	}
+}
