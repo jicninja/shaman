@@ -6,6 +6,7 @@ var enemy = [];
 var yetiTexture;
 var bulletsTextures;
 var yeti;
+var key;
 
 var animations = {};
 
@@ -134,7 +135,7 @@ socket.on('change position', function(data) {
 
 function animate(timestamp) {
     requestAnimationFrame(animate);
-
+    checkActions();
     if (!timestamp) timestamp = 0;
     var elapsed = timestamp - previous;
     if (elapsed > 1000) elapsed = frameDuration;
@@ -150,47 +151,49 @@ function animate(timestamp) {
 
 }
 
-document.onkeydown = checkKey;
-
-
+window.addEventListener('keydown', checkKey);
+window.addEventListener('keyup', function () {
+    key = {};
+});
 
 
 function checkKey(e) {
 
     e = e || window.event;
-    e.stopPropagation();
-    if (e.keyCode == '38') {
+   key = e;
+
+}
+
+function checkActions () {
+    if (key.keyCode == '38') {
         // up arrow
         var y =  yeti.position.y;
         y = y - 10 ;
         yeti.setPosition({y: y, x: yeti.position.x });
     }
-    else if (e.keyCode == '40') {
+    else if (key.keyCode == '40') {
         // down arrow
         var y =  yeti.position.y;
         y = y + 10 ;
         yeti.setPosition({y: y, x: yeti.position.x });
     }
-    else if (e.keyCode == '37') {
+    else if (key.keyCode == '37') {
         // left arrow
         var x =  yeti.position.x;
         x = x - 10 ;
         yeti.setPosition({x: x, y: yeti.position.y });
     }
-    else if (e.keyCode == '39') {
+    else if (key.keyCode == '39') {
         // right arrow
         var x =  yeti.position.x;
         x = x + 10 ;
         yeti.setPosition({x: x, y: yeti.position.y });
     }
-    else if (e.keyCode == '81') {
+    else if (key.keyCode == '81') {
         // Q
         yeti.fire('q');
     }
-
 }
-
-
 
 
 
