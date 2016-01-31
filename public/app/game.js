@@ -72,7 +72,7 @@ function onLoadedCallback(loader, resources) {
 }
 
 socket.on('user joined', function(data) {
-    var newEnemy = new player(data.username, yetiTexture, {type: CFG.players.type.ENEMY, id: data.id}, stage, undefined, socket);
+    var newEnemy = new player(data.username, yetiTexture, {type: CFG.players.type.ENEMY, id: data.id}, stage, undefined, socket, animations);
     enemy.push(newEnemy);
 });
 
