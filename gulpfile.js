@@ -82,7 +82,7 @@ gulp.task('copy:json', function(){
 });
 
 gulp.task('copyImages', function(){
-    gulp.src(['./public/assets/*.png', './public/assets/*.jpg', './public/assets/*.gif', '/public/assets/*.mp3'])
+    gulp.src(['./public/assets/*.png', './public/assets/*.jpg', './public/assets/*.gif', './public/assets/*.mp3'])
         .pipe(gulp.dest('./dist/assets'));
 });
 
