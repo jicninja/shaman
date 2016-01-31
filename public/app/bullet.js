@@ -82,7 +82,15 @@ function bullet(PLayerLauncher, Textures, Type, Stage, Send, realtime, Enemy){
             var tintsprite2 = self.enemy[i].anim.left;
             var tintsprite3 = self.enemy[i].anim.up;
 
-              tintsprite1.tint = tintsprite2.tint = tintsprite3.tint = 0xFF0000;
+            if(self.enemy[i].player){
+                document.getElementById("game-blood").className = 'active';
+                setTimeout(function(){
+                    document.getElementById("game-blood").className = '';
+                }, 250);
+            }
+
+
+            tintsprite1.tint = tintsprite2.tint = tintsprite3.tint = 0xFF0000;
           	setTimeout(function(){
                 tintsprite1.tint = tintsprite2.tint = tintsprite3.tint = 0xFFFFFF;
           	}, 250);
