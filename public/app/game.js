@@ -120,6 +120,7 @@ socket.on('die', function(data){
     console.log(data);
     console.log(toRemove);
     if(toRemove >= 0){
+        document.getElementById('respawn').className = '';
         enemy[toRemove].display_tomb();
         //enemy[toRemove].destroy(stage);
         //enemy.splice(toRemove, 1);

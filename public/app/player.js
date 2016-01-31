@@ -110,7 +110,6 @@ player.prototype.respawn = function () {
 
 
 player.prototype.display_tomb = function () {
-    document.getElementById('respawn').className = '';
 
     this.alive = false;
     this.shielded = false;
