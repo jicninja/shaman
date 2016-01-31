@@ -85,7 +85,11 @@ function onLoadedCallback(loader, resources) {
 }
 
 function enter() {
-    if (!document.getElementById("init-form").className) {
+
+
+
+
+    if (!document.getElementById("init-form").className || document.getElementById("loader").className) {
         return false;
     }
 
