@@ -178,18 +178,7 @@ player.prototype.updateServer = function (playerData) {
 
     if(!playerData ) {return false; }
 
-
-    if(typeof playerData.x !== 'undefined') {
-        this.position.x = playerData.x;
-    }
-
-    if(typeof playerData.y !== 'undefined') {
-        this.position.y = playerData.y;
-    }
-
-
-
-    this.setPosition(this.position, false);
+    this.setPosition(playerData, false);
 };
 
 
