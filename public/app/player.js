@@ -16,7 +16,7 @@ function player (name, texture, data, stage, lives, realtime, bulletTextures) {
     this.realtime = realtime;
     this.position = {};
     this.direction = 'right';
-
+    
     this.stage = stage;
 
     //se crea el nombre
@@ -32,7 +32,7 @@ function player (name, texture, data, stage, lives, realtime, bulletTextures) {
 
     if (data) {
         this.id = data.id ? data.id : CFG.players.default_id;
-        this.sprite.alpha = data.type === CFG.players.type.ENEMY ? CFG.players.alpha.ENEMY : CFG.players.alpha.PLAYABLE;
+        //this.sprite.alpha = data.type === CFG.players.type.ENEMY ? CFG.players.alpha.ENEMY : CFG.players.alpha.PLAYABLE;
     }
 
 
@@ -99,13 +99,9 @@ player.prototype.setPosition = function (position, update) {
 //Se realiza un disparo
 player.prototype.fire = function (type) {
     if(!type) {return false;}
-
-    var b = new bullet(this, this.bulletTextures, '1', this.stage, true, this.realtime);
-    
+    var b = new bullet(this, this.bulletTextures, '1', this.stage, true, this.realtime, enemy);
     return true;    
 };
-
-
 
 
 //se updatea la posicion desde el server

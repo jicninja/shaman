@@ -44,7 +44,7 @@ socket.on('user joined', function(data) {
 });
 
 socket.on('render fire', function(data) {
-    var b = new bullet(data, bulletsTextures, '1', stage,  false, socket);
+    var b = new bullet(data, bulletsTextures, '1', stage,  false, socket, enemy);
 });
 
 
