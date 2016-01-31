@@ -26,9 +26,7 @@ function player (name, texture, data, stage, lives, realtime, bulletTextures, an
         this.anim.up.visible = false;
         this.anim.left.visible = false;
 
-        this.anim.down.play();
-        this.anim.left.play();
-        this.anim.up.play();
+
 
     }
 
@@ -118,6 +116,9 @@ player.prototype.setPosition = function (position, update) {
     }
 
     if(position.x != this.position.x){
+
+        this.anim.left.gotoAndStop(this.anim.left.currentFrame + 1 );
+
         if(position.x > this.position.x){
             this.direction = 'right';
             this.anim.up.visible = false;
@@ -134,10 +135,13 @@ player.prototype.setPosition = function (position, update) {
             this.anim.left.scale = {x:1, y:1};
 
         }
-        this.position.x = position.x;    
+        this.position.x = position.x;
     }
     
     if(position.y != this.position.y){
+        this.anim.up.gotoAndStop(this.anim.up.currentFrame + 1 );
+        this.anim.down.gotoAndStop(this.anim.down.currentFrame + 1 );
+
         if(position.y < this.position.y){
             this.direction = 'up';
             this.anim.up.visible = true;
@@ -149,6 +153,7 @@ player.prototype.setPosition = function (position, update) {
             this.anim.up.visible = false;
             this.anim.down.visible = true;
             this.anim.left.visible = false;
+
         }
         this.position.y = position.y;    
     }
@@ -184,7 +189,6 @@ player.prototype.updateServer = function (playerData) {
 
 // ataccheame esta
 player.prototype.attach = function (stage) {
-    stage.addChild(this.sprite);
     stage.addChild(this.anim.down);
     stage.addChild(this.anim.up);
     stage.addChild(this.anim.left);
