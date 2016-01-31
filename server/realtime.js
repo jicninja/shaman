@@ -66,7 +66,6 @@ module.exports = function(io, numUsers) {
                   if(x <= 70 && y <= 70){
                      if(users[i].shield == false){
                         
-                         console.log(userslives[users[i].id]);
                          if(userslives[users[i].id] >= 2){
                             userslives[users[i].id]--;
                             socket.broadcast.emit('hit', users[i].id);
@@ -109,7 +108,6 @@ module.exports = function(io, numUsers) {
             // we store the username in the socket session for this client
             socket.username = username;
             socket.playerData = {x: 0, y: 0};
-            console.log("ADD USER!");
             socket.life = 5;
             socket.shield = false;
             ++numUsers;
