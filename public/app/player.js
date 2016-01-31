@@ -98,8 +98,6 @@ player.prototype.setPosition = function (position, update) {
 
     for (var i in enemy) {
       if(enemy[i].id != this.id){
-        console.log('enemy: ' + enemy[i].position.x + ' ' + enemy[i].position.y);
-        console.log('new: ' + position.x + ' ' + position.y);
         if(position.x > enemy[i].position.x){
             var x = position.x - enemy[i].position.x;
           }
@@ -114,19 +112,19 @@ player.prototype.setPosition = function (position, update) {
           }
 
           if(x <= 70 && y <= 70){
-            console.log('IN');
             return false;
           } 
       }       
     }
 
-    if(typeof position.x !== 'undefined') {
+    if(position.x != this.position.x){
         if(position.x > this.position.x){
             this.direction = 'right';
             this.anim.up.visible = false;
             this.anim.down.visible = false;
             this.anim.left.visible = true;
             this.anim.left.scale = {x:-1, y:1};
+
         }
         else {
             this.direction = 'left';
@@ -136,10 +134,10 @@ player.prototype.setPosition = function (position, update) {
             this.anim.left.scale = {x:1, y:1};
 
         }
-        this.position.x = position.x;
+        this.position.x = position.x;    
     }
-
-    if(typeof position.y !== 'undefined') {
+    
+    if(position.y != this.position.y){
         if(position.y < this.position.y){
             this.direction = 'up';
             this.anim.up.visible = true;
@@ -152,7 +150,7 @@ player.prototype.setPosition = function (position, update) {
             this.anim.down.visible = true;
             this.anim.left.visible = false;
         }
-        this.position.y = position.y;
+        this.position.y = position.y;    
     }
 
     this.anim.down.position.x = this.anim.up.position.x =  this.anim.left.position.x = this.position.x;
