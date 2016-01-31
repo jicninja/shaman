@@ -145,6 +145,7 @@ module.exports = function(io, numUsers) {
 
         socket.on('respawn', function() {
             userslives[socket.id] = 5;
+            socket.broadcast.emit('respawn', socket.id);
         });
 
         // when the user disconnects.. perform this

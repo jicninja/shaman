@@ -114,6 +114,12 @@ socket.on('init users', function(data){
         }
     }
 });
+socket.on('respawn', function(data){
+    var toRemove = _.findIndex(enemy, {id: data});
+    if(toRemove >= 0){
+        enemy[toRemove].respawn();
+    }
+})
 
 socket.on('die', function(data){
     var toRemove = _.findIndex(enemy, {id: data});
