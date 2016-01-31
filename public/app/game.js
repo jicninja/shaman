@@ -7,6 +7,8 @@ var yetiTexture;
 var bulletsTextures;
 var yeti;
 
+var animations = {};
+
 var previous = 0,
     frameDuration = 1000 / CFG.fps,
     lag = 0;
@@ -16,9 +18,12 @@ var imsocket = {};
 
 
 PIXI.loader
-    .add('texture', 'assets/p2.png')
     .add('yeti', 'assets/yeti.png')
-    .add('texture2', 'assets/background.png')
+    .add('anim_down', 'assets/caminar_down.json')
+    .add('anim_up', 'assets/caminar_up.json')
+
+    .add('anim_left', 'assets/caminar_left.json')
+
     .add('bullet1', 'assets/bullet-one.png')
     .load(onLoadedCallback);
 
@@ -30,9 +35,37 @@ function onLoadedCallback(loader, resources) {
 
     bulletsTextures = {
         bullet1: resources.bullet1.texture
+    };
+
+
+    var frames_down = [];
+
+    for (var i = 1; i < 8; i++) {
+        frames_down.push(PIXI.Texture.fromFrame('Caminar_d_0' + i + '.png'));
     }
 
-    yeti = new player(yetiName, yetiTexture, {type: CFG.players.type.PLAYABLE}, stage, undefined, socket, bulletsTextures);
+    animations.down = frames_down;
+
+
+    var frames_up = [];
+
+    for (var i = 1; i < 8; i++) {
+        frames_up.push(PIXI.Texture.fromFrame('Caminar_a_0' + i + '.png'));
+    }
+    animations.up = frames_up;
+
+
+    var frames_left = [];
+
+    for (var i = 1; i < 7; i++) {
+        frames_left.push(PIXI.Texture.fromFrame('Caminar_c_0' + i + '.png'));
+    }
+
+    animations.left = frames_left;
+
+
+
+    yeti = new player(yetiName, yetiTexture, {type: CFG.players.type.PLAYABLE}, stage, undefined, socket, bulletsTextures, animations   );
     socket.emit('add user', yetiName);
 
     animate();
