@@ -69,6 +69,8 @@ function onLoadedCallback(loader, resources) {
     yeti = new player(yetiName, yetiTexture, {type: CFG.players.type.PLAYABLE}, stage, undefined, socket, bulletsTextures, animations   );
     socket.emit('add user', yetiName);
 
+
+    document.getElementById("loader").className = '';
     animate();
 }
 
