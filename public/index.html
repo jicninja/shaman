@@ -20,8 +20,15 @@
     <button onclick="enter()">Enter</button>
   </div>
 
+  <img id="game-help" src="assets/help-detail.jpg" onclick="toggle_help()" />
+
+
+  <a  class="help-icon" onclick="toggle_help()"><img id="ask_help"  src="assets/help.png" /></a>
   <div id="game">
-    <div id="game-logo"><img src="assets/logob.png"/></div>
+    <div id="game-logo"><img src="assets/logob.png"/>
+
+    </div>
+
 
     <div id="game-content">
       <canvas id="game-canvas"></canvas>  

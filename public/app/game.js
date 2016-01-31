@@ -9,7 +9,7 @@ var bulletsTextures;
 var yeti;
 var key = [];
 var shieldTexture;
-
+var help = false;
 var animations = {};
 
 var previous = 0,
@@ -21,6 +21,13 @@ var imsocket = {};
 var tombt;
 
 var sounds = {};
+
+function toggle_help() {
+    help = !help;
+    document.getElementById('game-help').className = help ? 'active' : '';
+    document.getElementById('ask_help').className = help ? 'hide' : '';
+
+}
 
 PIXI.loader
     .add('yeti', 'assets/yeti.png')
