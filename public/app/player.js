@@ -189,7 +189,6 @@ player.prototype.updateServer = function (playerData) {
 
 // ataccheame esta
 player.prototype.attach = function (stage) {
-    stage.addChild(this.sprite);
     stage.addChild(this.anim.down);
     stage.addChild(this.anim.up);
     stage.addChild(this.anim.left);
