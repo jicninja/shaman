@@ -93,7 +93,7 @@ socket.on('init users', function(data){
         var l = users.length;
         if(users.length) {
             for (var i = 0; i < l ; i++) {
-                var newEnemy = new player(users[i].username, yetiTexture, {type: CFG.players.type.ENEMY, id: users[i].id}, stage, undefined, socket);
+                var newEnemy = new player(users[i].username, yetiTexture, {type: CFG.players.type.ENEMY, id: users[i].id}, stage, undefined, socket, animations);
                 var playerData = users[i].playerData;
                 newEnemy.setPosition(playerData, false);
 
