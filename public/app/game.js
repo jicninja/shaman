@@ -7,6 +7,7 @@ var yetiTexture;
 var bulletsTextures;
 var yeti;
 var key = [];
+var shieldTexture;
 
 var animations = {};
 
@@ -26,9 +27,12 @@ PIXI.loader
     .add('anim_left', 'assets/caminar_left.json')
 
     .add('bullet1', 'assets/bullet-one.png')
-    .add('bullet2', 'assets/ice_bullet.png')
-    .add('shield', 'assets/shield.png')
+    .add('bullet2', 'assets/bullet-two.png')
+    .add('shieldt', 'assets/shield.png')
     .add('tomb', 'assets/tomb.png')
+    .add('shield', 'assets/shield.png')
+
+    
 
     .load(onLoadedCallback);
 
@@ -38,8 +42,11 @@ function onLoadedCallback(loader, resources) {
     yetiName = parseInt((Math.random() * 10000));
     yetiTexture = resources.yeti.texture;
 
+    shieldTexture = resources.shieldt.texture;
+
     bulletsTextures = {
-        bullet1: resources.bullet1.texture
+        bullet1: resources.bullet1.texture,
+        bullet2: resources.bullet2.texture
     };
 
 
@@ -70,7 +77,7 @@ function onLoadedCallback(loader, resources) {
 
 
 
-    yeti = new player(yetiName, yetiTexture, {type: CFG.players.type.PLAYABLE}, stage, undefined, socket, bulletsTextures, animations   );
+    yeti = new player(yetiName, yetiTexture, {type: CFG.players.type.PLAYABLE}, stage, undefined, socket, bulletsTextures, animations,  shieldTexture);
     socket.emit('add user', yetiName);
 
 
@@ -79,7 +86,7 @@ function onLoadedCallback(loader, resources) {
 }
 
 socket.on('user joined', function(data) {
-    var newEnemy = new player(data.username, yetiTexture, {type: CFG.players.type.ENEMY, id: data.id}, stage, undefined, socket, undefined, animations);
+    var newEnemy = new player(data.username, yetiTexture, {type: CFG.players.type.ENEMY, id: data.id}, stage, undefined, socket, undefined, animations, shieldTexture);
     enemy.push(newEnemy);
 });
 

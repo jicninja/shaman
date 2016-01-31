@@ -7,11 +7,17 @@
  * @param lives
  */
 
-function player (name, texture, data, stage, lives, realtime, bulletTextures, animations) {
+function player (name, texture, data, stage, lives, realtime, bulletTextures, animations, shieldTexture) {
     // se crea el sprite
     var self = this;
     this.sprite = new PIXI.Sprite(texture);
     this.sprite.anchor = new PIXI.Point(0.5,0.5);
+
+    this.shield = new PIXI.Sprite(shieldTexture);
+    this.shield.anchor = new PIXI.Point(0.5,0.5);
+    this.shield.scale = new PIXI.Point(0.8,0.8);
+    this.shield.visible = false;
+    this.shielded = false;
 
     if (animations) {
         this.anim = {
@@ -168,6 +174,8 @@ player.prototype.setPosition = function (position, update) {
     this.anim.down.position.y = this.anim.up.position.y = this.anim.left.position.y =  this.position.y;
     this.text.x = this.position.x + 3 - (this.anim.up.width / 7);
     this.text.y = this.position.y - (25 + this.anim.up.height * CFG.players.size);
+    this.shield.position.x = this.position.x;
+    this.shield.position.y = this.position.y;
 
 
     if(update === false){
@@ -178,6 +186,7 @@ player.prototype.setPosition = function (position, update) {
 
 //Se realiza un disparo
 player.prototype.fire = function (type) {
+    var self = this;
     if(!type) {return false;}
     
     if(this.konami.length <= 3){
@@ -196,6 +205,15 @@ player.prototype.fire = function (type) {
     if(this.konami.length >= 4){
         if(this.konami == 'qwwq'){
             var b = new bullet(this, this.bulletTextures, '1', this.stage, true, this.realtime, enemy);            
+        }
+        if(this.konami == 'ewwe'){
+            this.realtime.emit('shield');
+            this.shield.visible = true;
+            this.shielded = true;
+            setTimeout(function(){
+                self.shield.visible = false;
+                this.shielded = false;
+            }, 2000);
         }
     }
     return true;
@@ -217,6 +235,7 @@ player.prototype.attach = function (stage) {
     stage.addChild(this.anim.down);
     stage.addChild(this.anim.up);
     stage.addChild(this.anim.left);
+    stage.addChild(this.shield);
 
     if(this.text) {
         stage.addChild(this.text);
