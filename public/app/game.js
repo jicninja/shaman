@@ -96,8 +96,6 @@ function onLoadedCallback(loader, resources) {
 function enter() {
 
 
-
-
     if (!document.getElementById("init-form").className || document.getElementById("loader").className) {
         return false;
     }
@@ -106,14 +104,17 @@ function enter() {
     yetiName = document.getElementById("name_input").value || 'player';
     console.log(yetiName);
 
-    socket.emit('add user', yetiName);
     yeti = new player(yetiName, yetiTexture, {type: CFG.players.type.PLAYABLE}, stage, undefined, socket, bulletsTextures, animations,  shieldTexture, tombt);
+    setTimeout(function(){
+        socket.emit('add user', yetiName);
+    }, 2000);    
+    
 }
 
 socket.on('user joined', function(data) {
-    var newEnemy = new player(data.username, yetiTexture, {type: CFG.players.type.ENEMY, id: data.id}, stage, undefined, socket, undefined, animations, shieldTexture, tombt);
-    enemy.push(newEnemy);
-});
+        var newEnemy = new player(data.username, yetiTexture, {type: CFG.players.type.ENEMY, id: data.id}, stage, undefined, socket, undefined, animations, shieldTexture, tombt);
+        enemy.push(newEnemy);
+    });
 
 socket.on('render fire', function(data) {
     var b = new bullet(data, bulletsTextures, data.type, stage,  false, socket, enemy);
@@ -281,6 +282,5 @@ function checkActions () {
 
 
 }
-
 
 
