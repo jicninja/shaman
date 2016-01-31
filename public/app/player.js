@@ -38,6 +38,7 @@ function player (name, texture, data, stage, lives, realtime, bulletTextures, an
     this.position = {};
     this.direction = 'right';
     this.player = true;
+    this.konami = 'qwer';
     
     this.stage = stage;
 
@@ -77,8 +78,8 @@ function player (name, texture, data, stage, lives, realtime, bulletTextures, an
     this.position.y = CFG.players.default_position.top;
     */
 
-    this.position.x = Math.floor(Math.random() * 800) + 1;
-    this.position.y = Math.floor(Math.random() * 600) + 1;
+    this.position.x = Math.floor(Math.random() * (CFG.width - 32)) + 32;
+    this.position.y = Math.floor(Math.random() * (CFG.height - 64)) + 64;
 
     this.setPosition(this.position , false);
 
@@ -95,6 +96,11 @@ player.prototype.lives = CFG.players.lives;
 
 player.prototype.setPosition = function (position, update) {
     if(!position) {return false;}
+
+    if(position.x >= (CFG.width - 32)){return false;}
+    if(position.x <= (0 + 32)){return false;}
+    if(position.y >= (CFG.height - 64)){return false;}
+    if(position.y <= (0 + 64)){return false;}
 
     for (var i in enemy) {
       if(enemy[i].id != this.id){
@@ -175,8 +181,26 @@ player.prototype.setPosition = function (position, update) {
 //Se realiza un disparo
 player.prototype.fire = function (type) {
     if(!type) {return false;}
-    var b = new bullet(this, this.bulletTextures, '1', this.stage, true, this.realtime, enemy);
-    return true;    
+    
+    if(this.konami.length <= 3){
+        this.konami += type;
+    }
+    else {
+        this.konami = this.konami.substr(1, 3) + type;
+    }
+
+    var html = '';
+    for (var i = 0; i < 4; i++) {
+        html += '<div class="game-action-btn">' + this.konami.substr(i, 1).toUpperCase() + '</div>';
+    }
+    document.getElementById("game-actions").innerHTML = html;
+
+    if(this.konami.length >= 4){
+        if(this.konami == 'qwwq'){
+            var b = new bullet(this, this.bulletTextures, '1', this.stage, true, this.realtime, enemy);            
+        }
+    }
+    return true;
 };
 
 

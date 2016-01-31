@@ -6,7 +6,7 @@ var enemy = [];
 var yetiTexture;
 var bulletsTextures;
 var yeti;
-var key;
+var key = [];
 
 var animations = {};
 
@@ -151,48 +151,68 @@ function animate(timestamp) {
 
 }
 
-window.addEventListener('keydown', checkKey);
-window.addEventListener('keyup', function () {
-    key = {};
-});
+window.addEventListener('keydown', checkKey, true);
+window.addEventListener('keyup', function (e) {
+
+    if (e.keyCode == '81' || e.keyCode == '87' || e.keyCode == '69' || e.keyCode == '82') {
+        return false;
+    }
+
+    delete key[e.keyCode];
+
+}, true);
 
 
 function checkKey(e) {
 
-    e = e || window.event;
-   key = e;
+    key[e.keyCode] = true;
+
+
+    if (e.keyCode == '81') {
+        yeti.fire('q');
+    }
+    if (e.keyCode == '87') {
+        yeti.fire('w');
+    }
+     if (e.keyCode == '69') {
+        yeti.fire('e');
+    }
+     if (e.keyCode == '82') {
+        yeti.fire('r');
+    }
+
+
 
 }
 
 function checkActions () {
-    if (key.keyCode == '38') {
+    if (key['38']) {
         // up arrow
         var y =  yeti.position.y;
-        y = y - 10 ;
+        y = y - CFG.players.velocity.min ;
         yeti.setPosition({y: y, x: yeti.position.x });
     }
-    else if (key.keyCode == '40') {
+    else if (key['40']) {
         // down arrow
         var y =  yeti.position.y;
-        y = y + 10 ;
+        y = y + CFG.players.velocity.min ;
         yeti.setPosition({y: y, x: yeti.position.x });
     }
-    else if (key.keyCode == '37') {
+     if (key['37']) {
         // left arrow
         var x =  yeti.position.x;
-        x = x - 10 ;
+        x = x - CFG.players.velocity.min ;
         yeti.setPosition({x: x, y: yeti.position.y });
     }
-    else if (key.keyCode == '39') {
+    else if (key['39']) {
         // right arrow
         var x =  yeti.position.x;
-        x = x + 10 ;
+        x = x + CFG.players.velocity.min ;
         yeti.setPosition({x: x, y: yeti.position.y });
     }
-    else if (key.keyCode == '81') {
-        // Q
-        yeti.fire('q');
-    }
+
+
+
 }
 
 
