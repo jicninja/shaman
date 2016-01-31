@@ -78,8 +78,8 @@ function player (name, texture, data, stage, lives, realtime, bulletTextures, an
     this.position.y = CFG.players.default_position.top;
     */
 
-    this.position.x = Math.floor(Math.random() * 800) + 1;
-    this.position.y = Math.floor(Math.random() * 600) + 1;
+    this.position.x = Math.floor(Math.random() * (CFG.width - 32)) + 32;
+    this.position.y = Math.floor(Math.random() * (CFG.height - 64)) + 64;
 
     this.setPosition(this.position , false);
 
@@ -96,6 +96,11 @@ player.prototype.lives = CFG.players.lives;
 
 player.prototype.setPosition = function (position, update) {
     if(!position) {return false;}
+
+    if(position.x >= (CFG.width - 32)){return false;}
+    if(position.x <= (0 + 32)){return false;}
+    if(position.y >= (CFG.height - 64)){return false;}
+    if(position.y <= (0 + 64)){return false;}
 
     for (var i in enemy) {
       if(enemy[i].id != this.id){
