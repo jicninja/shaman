@@ -36,6 +36,7 @@ function player (name, texture, data, stage, lives, realtime, bulletTextures, an
     this.position = {};
     this.direction = 'right';
     this.player = true;
+    this.konami = 'qwer';
     
     this.stage = stage;
 
@@ -172,8 +173,26 @@ player.prototype.setPosition = function (position, update) {
 //Se realiza un disparo
 player.prototype.fire = function (type) {
     if(!type) {return false;}
-    var b = new bullet(this, this.bulletTextures, '1', this.stage, true, this.realtime, enemy);
-    return true;    
+    
+    if(this.konami.length <= 3){
+        this.konami += type;
+    }
+    else {
+        this.konami = this.konami.substr(1, 3) + type;
+    }
+
+    var html = '';
+    for (var i = 0; i < 4; i++) {
+        html += '<div class="game-action-btn">' + this.konami.substr(i, 1).toUpperCase() + '</div>';
+    }
+    document.getElementById("game-actions").innerHTML = html;
+
+    if(this.konami.length >= 4){
+        if(this.konami == 'qwwq'){
+            var b = new bullet(this, this.bulletTextures, '1', this.stage, true, this.realtime, enemy);            
+        }
+    }
+    return true;
 };
 
 

@@ -184,8 +184,16 @@ function checkKey(e) {
         yeti.setPosition({x: x, y: yeti.position.y });
     }
     else if (e.keyCode == '81') {
-        // Q
         yeti.fire('q');
+    }
+    else if (e.keyCode == '87') {
+        yeti.fire('w');
+    }
+    else if (e.keyCode == '69') {
+        yeti.fire('e');
+    }
+    else if (e.keyCode == '82') {
+        yeti.fire('r');
     }
 
 }
