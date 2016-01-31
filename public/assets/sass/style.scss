@@ -1,4 +1,57 @@
 /* Fix user-agent */
+#init-form {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  font-family: 'Finger Paint', cursive;
+  color: white;
+  z-index: 1800000990;
+  text-align: center;
+
+  -webkit-transition: opacity  500ms linear 500ms;
+  -moz-transition: opacity   500ms linear 500ms;
+  -o-transition: opacity   500ms linear 500ms;
+  transition: opacity   500ms linear 500ms;
+
+  opacity: 0;
+  visibility: hidden;
+
+  &.active {
+    -webkit-transition: opacity  500ms linear 500ms;
+    -moz-transition: opacity   500ms linear 500ms;
+    -o-transition: opacity   500ms linear 500ms;
+    transition: opacity   500ms linear 500ms;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  h3 {
+    font-size: 80px;
+    color: black;
+    margin-bottom: 20px;
+  }
+
+  input {
+    padding: 20px;
+    font-size: 25px;
+    border: 5px solid black;
+    text-align: center;
+    outline: none !important;
+  }
+  button {
+    margin: auto auto;
+    display: block;
+    font-size: 20px;
+    padding: 10px;
+    background: none;
+    min-width: 150px;
+    margin-top: 20px;
+    border: 5px solid black;
+
+  }
+}
 
 #respawn {
   position: fixed;
@@ -6,7 +59,7 @@
   height: 100%;
   top: 0;
   left: 0;
-  z-index: 100000000;
+  z-index: 100000;
   background: black;
   text-align: center;
   font-family: 'Finger Paint', cursive;
