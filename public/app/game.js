@@ -103,6 +103,7 @@ socket.on('init users', function(data){
 
     var users = data.users;
 
+    console.log(data);
     if(users) {
         var l = users.length;
         if(users.length) {
