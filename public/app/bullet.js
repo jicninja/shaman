@@ -1,4 +1,5 @@
-function bullet(PLayerLauncher, Textures, Type, Stage, Send, realtime){
+function bullet(PLayerLauncher, Textures, Type, Stage, Send, realtime, Enemy){
+	var self = this;
 	this.player = PLayerLauncher;
 	this.bulletstextures = Textures;
 	this.stage = Stage;
@@ -6,6 +7,7 @@ function bullet(PLayerLauncher, Textures, Type, Stage, Send, realtime){
 	this.sprite = new PIXI.Sprite(this.bulletstextures.bullet1);
     this.sprite.anchor = new PIXI.Point(0.5,0.5);
     this.type = Type;
+    this.enemy = Enemy;
     
     this.direction = this.player.direction;
     this.margin = 20;
@@ -53,6 +55,42 @@ function bullet(PLayerLauncher, Textures, Type, Stage, Send, realtime){
     }
 
     createjs.Tween.get(this.sprite.position).to(this.animation, 500).call(this.bulletCollector, [], this);
+
+    var intervalcount = 1;
+    var interval = setInterval(function(){
+    	
+    	self.enemy.push(yeti);
+    	
+        for (var i in self.enemy) {
+
+          if(self.sprite.position.x > self.enemy[i].position.x){
+            var x = self.sprite.position.x - self.enemy[i].position.x;
+          }
+          else {
+            var x = self.enemy[i].position.x - self.sprite.position.x;
+          }
+          if(self.sprite.position.y > self.enemy[i].position.y){
+            var y = self.sprite.position.y - self.enemy[i].position.y;
+          }
+          else {
+            var y = self.enemy[i].position.y - self.sprite.position.y;
+          }
+          if(x <= 70 && y <= 70){
+          	var tintsprite = self.enemy[i].sprite;
+          	tintsprite.tint = 0xFF0000;
+          	setTimeout(function(){
+          		tintsprite.tint = 0xFFFFFF;
+          	}, 250);
+
+          	 self.stage.removeChild(self.sprite);
+          }  
+        }
+        intervalcount++;
+        if(intervalcount >= 5){
+            clearInterval(interval);
+        }
+    }, 100);
+	
     
     this.stage.addChild(this.sprite);
 }
