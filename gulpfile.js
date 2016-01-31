@@ -75,6 +75,12 @@ gulp.task('copy', function(){
         .pipe(livereload());
 });
 
+gulp.task('copy:json', function(){
+    gulp.src('./public/assets/*.json')
+        .pipe(gulp.dest('./dist/assets'))
+        .pipe(livereload());
+});
+
 gulp.task('copyImages', function(){
     gulp.src('./public/assets/*.png')
         .pipe(gulp.dest('./dist/assets'));
@@ -88,7 +94,7 @@ gulp.task('clean', function(){
 gulp.task('dev', ['sass:watch', 'copyDev', 'server:watch'] );
 
 gulp.task('compile',function() {
-    runSequence('clean', 'sass', 'copyImages', 'uglify:vendor','uglify:app', 'htmlCompile');
+    runSequence('clean', 'sass', 'copyImages', 'uglify:vendor','uglify:app', 'htmlCompile','copy:json');
 });
 
 // clean up if an error goes unhandled.
