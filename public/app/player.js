@@ -106,7 +106,12 @@ player.prototype.respawn = function () {
     this.anim.down.visible = true;
     this.anim.up.visible = false;
     this.anim.left.visible = false;
+    if(this.player){
+        this.lives = 5;
+        document.getElementById("game-status-life-opacity").style.opacity = 0;
+    }
 };
+
 
 
 player.prototype.display_tomb = function () {
