@@ -7,11 +7,15 @@
  * @param lives
  */
 
-function player (name, texture, data, stage, lives, realtime, bulletTextures, animations, shieldTexture) {
+function player (name, texture, data, stage, lives, realtime, bulletTextures, animations, shieldTexture, tombtexture) {
     // se crea el sprite
     var self = this;
     this.sprite = new PIXI.Sprite(texture);
     this.sprite.anchor = new PIXI.Point(0.5,0.5);
+    this.alive = true;
+    this.tomb = new PIXI.Sprite(tombtexture);
+    this.tomb.anchor = new PIXI.Point(0.5,0.5);
+    this.tomb.visible = false;
 
     this.shield = new PIXI.Sprite(shieldTexture);
     this.shield.anchor = new PIXI.Point(0.5,0.5);
@@ -32,7 +36,7 @@ function player (name, texture, data, stage, lives, realtime, bulletTextures, an
         this.anim.up.visible = false;
         this.anim.left.visible = false;
         this.anim.down.scale = {x: CFG.players.size, y: CFG.players.size};
-        this.anim.up.scale = {x: CFG.players.size, y: CFG.players.size};
+        this.tomb.scale = this.anim.up.scale = {x: CFG.players.size, y: CFG.players.size};
 
     }
 
@@ -94,12 +98,25 @@ function player (name, texture, data, stage, lives, realtime, bulletTextures, an
 
 player.prototype.lives = CFG.players.lives;
 
+player.prototype.display_tomb = function () {
+    this.alive = false;
+    this.shielded = false;
+    this.shield.visible = false;
+    this.tomb.visible = true;
+    this.anim.down.visible = false;
+    this.anim.up.visible = false;
+    this.anim.left.visible = false;
+};
 
 
 //se inicializa la posicion
 
 player.prototype.setPosition = function (position, update) {
     if(!position) {return false;}
+    if(!this.alive) {
+        this.display_tomb();
+        return false;
+    }
 
     if(position.x >= (CFG.width - 32)){return false;}
     if(position.x <= (0 + 32)){return false;}
@@ -170,8 +187,8 @@ player.prototype.setPosition = function (position, update) {
         this.position.y = position.y;    
     }
 
-    this.anim.down.position.x = this.anim.up.position.x =  this.anim.left.position.x = this.position.x;
-    this.anim.down.position.y = this.anim.up.position.y = this.anim.left.position.y =  this.position.y;
+    this.tomb.position.x = this.anim.down.position.x = this.anim.up.position.x =  this.anim.left.position.x = this.position.x;
+    this.tomb.position.y = this.anim.down.position.y = this.anim.up.position.y = this.anim.left.position.y =  this.position.y;
     this.text.x = this.position.x + 3 - (this.anim.up.width / 7);
     this.text.y = this.position.y - (25 + this.anim.up.height * CFG.players.size);
     this.shield.position.x = this.position.x;
@@ -232,10 +249,12 @@ player.prototype.updateServer = function (playerData) {
 
 // ataccheame esta
 player.prototype.attach = function (stage) {
+
     stage.addChild(this.anim.down);
     stage.addChild(this.anim.up);
     stage.addChild(this.anim.left);
     stage.addChild(this.shield);
+    stage.addChild(this.tomb);
 
     if(this.text) {
         stage.addChild(this.text);
