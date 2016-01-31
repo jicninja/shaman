@@ -317,3 +317,16 @@ ul {
   top: 50%;
   margin-top: -100px;
 }
+
+#game-logo {
+  width: 200px;
+  z-index: 1410;
+  position: fixed;
+  top: 25px;
+  left: 25px;
+}
+
+#game-logo img {
+  width: 100%;
+  position: relative;
+}
