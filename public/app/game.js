@@ -38,6 +38,7 @@ PIXI.loader
 
 function onLoadedCallback(loader, resources) {
     
+    yetiName = parseInt((Math.random() * 10000));
     yetiTexture = resources.yeti.texture;
 
     ballTexture = resources.ball.texture;
@@ -74,31 +75,13 @@ function onLoadedCallback(loader, resources) {
 
     animations.left = frames_left;
 
-    document.getElementById("loader").className = '';
-    document.getElementById("init-form").className = 'active';
-    document.getElementById("init-form").addEventListener('keydown', function(e) {
-        if (e.keyCode == '13' ) {
-            return enter();
-        }
-    });
-    animate();
-}
-
-function enter() {
-
-
-
-
-    if (!document.getElementById("init-form").className || document.getElementById("loader").className) {
-        return false;
-    }
-
-    document.getElementById("init-form").className = '';
-    yetiName = document.getElementById("name_input").value || 'player';
-    console.log(yetiName);
-
-    socket.emit('add user', yetiName);
     yeti = new player(yetiName, yetiTexture, {type: CFG.players.type.PLAYABLE}, stage, undefined, socket, bulletsTextures, animations,  shieldTexture, tombt);
+    
+    setTimeout(function(){
+        socket.emit('add user', yetiName);
+        document.getElementById("loader").className = '';
+    }, 1000);    
+    animate();
 }
 
 socket.on('user joined', function(data) {
