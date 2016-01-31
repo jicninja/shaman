@@ -20,6 +20,8 @@ var socket = io();
 var imsocket = {};
 var tombt;
 
+var sounds = {};
+
 PIXI.loader
     .add('yeti', 'assets/yeti.png')
     .add('ball', 'assets/sball.png')
@@ -97,6 +99,7 @@ function enter() {
 
     yeti = new player(yetiName, yetiTexture, {type: CFG.players.type.PLAYABLE}, stage, undefined, socket, bulletsTextures, animations,  shieldTexture, tombt);
     setTimeout(function(){
+        document.getElementById("sound-music").play();        
         socket.emit('add user', yetiName);
     }, 2000);    
     
@@ -153,13 +156,14 @@ socket.on('die', function(data){
     if(imsocket.id == data){
         document.getElementById('respawn').className = '';
         yeti.display_tomb();
-        console.log('DIE!!!!');
+        document.getElementById("sound-die").play();
     }
     
 });
 
 socket.on('hit', function(data){
     if(imsocket.id == data){
+        document.getElementById("sound-hit").play();
         yeti.lives--;
         var opacity = 1 - (0.2 * yeti.lives);
         document.getElementById("game-status-life-opacity").style.opacity = opacity; 

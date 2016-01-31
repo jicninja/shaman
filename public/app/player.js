@@ -233,12 +233,15 @@ player.prototype.fire = function (type) {
 
     if(this.konami.length >= 4){
         if(this.konami == 'qwwq'){
-            var b = new bullet(this, this.bulletTextures, '1', this.stage, true, this.realtime, enemy);            
+            var b = new bullet(this, this.bulletTextures, '1', this.stage, true, this.realtime, enemy);
+            document.getElementById("sound-act1").play();           
         }
         if(this.konami == 'wqew'){
-            var b = new bullet(this, this.bulletTextures, '2', this.stage, true, this.realtime, enemy);            
+            var b = new bullet(this, this.bulletTextures, '2', this.stage, true, this.realtime, enemy);
+            document.getElementById("sound-act2").play();
         }
         if(this.konami == 'ewwe'){
+            document.getElementById("sound-act3").play();
             this.realtime.emit('shield');
             this.stage.addChild(this.shieldSprite);
             this.shielded = true;
